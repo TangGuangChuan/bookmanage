@@ -25,10 +25,10 @@
 							<div class="layui-tab-item layui-show">
 								<form class="layui-form" th:action="@{/login}" method="post">
 									<div class="layui-form-item">
-										<input type="text" name="username" required lay-verify="required" placeholder="用户名/邮箱" autocomplete="off" class="layui-input">
+										<input type="text" name="username" required lay-verify="required" placeholder="用户名/邮箱" class="layui-input">
 									</div>
 									<div class="layui-form-item">
-										<input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+										<input type="password" name="password" required lay-verify="required" placeholder="密码"  class="layui-input">
 									</div>
 									<!--<div class="layui-form-item">
 										<div class="layui-inline">
@@ -52,13 +52,13 @@
 							<div class="layui-tab-item">
 								<form class="layui-form" th:action="@{/register}" method="post">
 									<div class="layui-form-item">
-										<input type="text" name="username" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+										<input type="text" name="username" required lay-verify="required" placeholder="用户名"  class="layui-input">
 									</div>
 									<div class="layui-form-item">
-										<input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+										<input type="password" name="password" required lay-verify="required" placeholder="密码"  class="layui-input">
 									</div>
 									<div class="layui-form-item">
-										<input type="text" name="email" required lay-verify="required" placeholder="邮箱" autocomplete="off" class="layui-input">
+										<input type="text" name="email" required lay-verify="required" placeholder="邮箱"  class="layui-input">
 									</div>
 									<div class="layui-form-item m-login-btn">
 										<div class="layui-inline" align="center">
@@ -79,11 +79,14 @@
 		</div>
 		<script src="../static/admin/layui/layui.js" th:src="@{/admin/layui/layui.js}"></script>
 		<script>
+			if(window.history.replaceState)
+			{
+				window.history.replaceState(null, null, window.location.href)
+			}
 			layui.use(['form','element'], function(){
 				var form = layui.form();
 				var element = layui.element();
 				form.render();
-
 
 				//自定义验证规则
 				form.verify({
