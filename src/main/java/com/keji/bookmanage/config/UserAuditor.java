@@ -13,12 +13,13 @@ import java.util.Optional;
 public class UserAuditor implements AuditorAware<String> {
     /**
      * 实现审计功能获取当前创建或修改的用户
+     *
      * @return
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
-
-        return Optional.ofNullable(sysUser.getUsername());
+        Object obj = SecurityUtils.getSubject().getPrincipal();
+        return Optional.ofNullable(obj == null ? null : obj.toString());
     }
+
 }

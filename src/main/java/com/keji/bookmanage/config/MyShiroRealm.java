@@ -42,7 +42,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             return null;
         }
         String username = (String) authenticationToken.getPrincipal();
-        SysUser sysUser = sysUserService.findByUsername(username);
+        SysUser sysUser = sysUserService.findByUsernameOrEmail(username);
         if(sysUser == null) {
             return null;
         }
@@ -51,7 +51,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new LockedAccountException();
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                sysUser.getUsername(),
+                sysUser,
                 sysUser.getPassword(),
                 //ByteSource.Util.bytes(sysUser.getSalt()),
                 getName()//realm name

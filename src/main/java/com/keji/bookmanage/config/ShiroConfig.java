@@ -39,6 +39,8 @@ public class ShiroConfig {
         filterChainMap.put("/admin/**","anon");
         //配置退出
         filterChainMap.put("/logout","logout");
+        //放行注册请求
+        filterChainMap.put("/register","anon");
         //所有都需要认证,/**配置会导致static资源访问不了,具体认证需配置具体路径
         filterChainMap.put("/**","authc");
         //配置登录页面

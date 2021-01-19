@@ -1,5 +1,6 @@
 package com.keji.bookmanage.service;
 
+import com.keji.bookmanage.entity.SysRole;
 import com.keji.bookmanage.entity.SysUser;
 import com.keji.bookmanage.repository.SysUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,12 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     SysUserRepository sysUserRepository;
     @Override
-    public SysUser findByUsername(String username) {
-        return sysUserRepository.findByUsername(username);
+    public SysUser findByUsernameOrEmail(String username) {
+        return sysUserRepository.findByUsernameOrEmail(username);
+    }
+
+    @Override
+    public SysUser save(SysUser sysUser) {
+        return sysUserRepository.save(sysUser);
     }
 }

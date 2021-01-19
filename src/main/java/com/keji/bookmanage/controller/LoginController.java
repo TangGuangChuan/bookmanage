@@ -3,6 +3,7 @@ package com.keji.bookmanage.controller;
 import com.keji.bookmanage.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -45,10 +46,13 @@ public class LoginController {
         try{
             subject.login(usernamePasswordToken);
         }catch (UnknownAccountException e){
-            modelMap.put("error","用户不存在,请先注册");
+            modelMap.put("error","用户/邮箱不存在,请先注册");
             return "login";
         }catch (IncorrectCredentialsException e){
             modelMap.put("error","密码错误,请重新输入");
+            return "login";
+        }catch (LockedAccountException e){
+            modelMap.put("error","账户被锁定,请联系管理员解锁");
             return "login";
         } catch (Exception e){
             modelMap.put("error","未知错误,请联系管理员");

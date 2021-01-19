@@ -22,7 +22,7 @@ public class MyMatcher extends SimpleCredentialsMatcher {
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        SysUser sysUser = sysUserService.findByUsername(usernamePasswordToken.getUsername());
+        SysUser sysUser = sysUserService.findByUsernameOrEmail(usernamePasswordToken.getUsername());
         String pwd = encrypt(String.valueOf(usernamePasswordToken.getPassword()),sysUser.getSalt());
         String mysqlpwd = (String) info.getCredentials();
         return this.equals(pwd,mysqlpwd);
@@ -30,12 +30,12 @@ public class MyMatcher extends SimpleCredentialsMatcher {
 
     /**
      * 用MD5对密码进行加盐加密3次,避免相同密码的用户密文一样
-     * @param data
+     * @param password
      * @param salt
      * @return
      */
-    private String encrypt(String data,String salt){
-        String result = new Md5Hash(data,salt,3).toString();
+    public String encrypt(String password,String salt){
+        String result = new Md5Hash(password,salt,3).toString();
         return  result;
     }
 

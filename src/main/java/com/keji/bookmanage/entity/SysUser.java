@@ -1,8 +1,6 @@
 package com.keji.bookmanage.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
 import javax.persistence.*;
@@ -25,6 +23,7 @@ public class SysUser extends BaseEntity  {
     //是否锁定
     private Boolean locked = Boolean.FALSE;
     //邮箱
+    @Column(unique = true)
     private String email;
     //一个用户具有多个角色
     @ManyToMany(fetch = FetchType.EAGER)//立即从数据库加载数据
