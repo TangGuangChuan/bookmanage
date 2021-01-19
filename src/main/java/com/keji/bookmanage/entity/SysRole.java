@@ -28,11 +28,11 @@ public class SysRole extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name="permissionId")})
     private List<SysPermission> permissions;
     //用户-角色关系定义
-    @ManyToMany
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "SysUserRole",
             joinColumns = {@JoinColumn(name="roleId")},
             inverseJoinColumns = {@JoinColumn(name="uid")}
     )
-    private List<SysUser> sysUsers;
+    private List<SysUser> sysUsers;*/
 }

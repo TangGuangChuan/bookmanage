@@ -15,9 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
 /**
  * @auther tangguangchuan
  * @date 2021/1/12 下午3:56
@@ -58,12 +55,12 @@ public class LoginController {
             modelMap.put("error","未知错误,请联系管理员");
             return "login";
         }
-        return "index";
+        return "admin/index";
     }
 
     @RequestMapping(value = "/index")
     public String index(){
-        return "index";
+        return "admin/index";
     }
 
     //错误页面展示

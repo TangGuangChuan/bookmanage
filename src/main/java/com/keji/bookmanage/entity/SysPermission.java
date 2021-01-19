@@ -26,11 +26,11 @@ public class SysPermission extends BaseEntity {
     private String permission;
     private Boolean enable = Boolean.FALSE;
     //角色-权限关系
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "SysRolePermission",
             joinColumns = {@JoinColumn(name="permissionId")},
             inverseJoinColumns = {@JoinColumn(name="roleId")}
     )
-    private List<SysRole> roles;
+    private List<SysRole> roles;*/
 }

@@ -49,7 +49,7 @@
 				    <a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理</a>
 				  </li>
 				  <li class="layui-nav-item">
-				    <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息"><i class="iconfont">&#xe606;</i>个人信息</a>
+				    <a href="#" th:href="@{/user/info}" data-id='5' data-title="个人信息" target="iframe"><i class="iconfont">&#xe606;</i>个人信息</a>
 				  </li>
 				  <li class="layui-nav-item">
 				  	<a href="javascript:;" data-url="system.html" data-id='6' data-text="系统设置"><i class="iconfont">&#xe60b;</i>系统设置</a>
@@ -67,7 +67,7 @@
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
-					    <a th:href="@{/user/info}"  data-id='5' data-text="个人信息" shiro:principal property="username">超级管理员</a>
+					    <a href="#" th:href="@{/user/info}" target="iframe" data-id='5' data-title="个人信息"><span shiro:principal property="username"></span></a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}">退出</a></li>
 					</ul>
@@ -82,7 +82,7 @@
 					  <div class="layui-tab-content">
 					    <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
 					    	<!--1-->
-					    	<iframe src="admin/welcome.html" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
+					    	<iframe src="welcome.html" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
 					    	<!--1end-->
 					    </div>
 					  </div>
@@ -99,9 +99,9 @@
 				link:'./welcome.html'
 			}
 		</script>
-		<script src="../static/admin/layui/layui.js" th:src="@{/admin/layui/layui.js}"></script>
-		<script src="../static/admin/js/common.js" th:src="@{/admin/js/common.js}"></script>
-		<script src="../static/admin/js/main.js" th:src="@{admin/js/main.js}"></script>
+		<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
+		<script src="../static/admin/js/common.js" type="text/javascript" th:src="@{/admin/js/common.js}"></script>
+		<script src="../static/admin/js/main.js" type="text/javascript" th:src="@{/admin/js/main.js}"></script>
 
 	</body>
 </html>
