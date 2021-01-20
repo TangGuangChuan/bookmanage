@@ -1,10 +1,10 @@
 layui.config({
-	base: '../../static/admin/js/module/'
+	base: '../bookmanage/admin/js/module/'
 }).extend({
 	dialog: 'dialog',
 });
 
-layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element'], function() {
+layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'element'], function() {
 	var form = layui.form(),
 		layer = layui.layer,
 		$ = layui.jquery,
@@ -20,7 +20,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		form.render('checkbox');
 	});
 	//渲染表单
-	form.render();	
+	form.render();
 	//顶部添加
 	$('.addBtn').click(function() {
 		var url=$(this).attr('data-url');
@@ -51,7 +51,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 
 		dialog.tips('批量排序', '.listOrderBtn');
 
-	})	
+	})
 	//顶部批量删除
 	$('.delBtn').click(function() {
 		var url=$(this).attr('data-url');
@@ -70,7 +70,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 
 		dialog.tips('批量删除', '.delBtn');
 
-	})	
+	})
 	//列表添加
 	$('#table-list').on('click', '.add-btn', function() {
 		var url=$(this).attr('data-url');

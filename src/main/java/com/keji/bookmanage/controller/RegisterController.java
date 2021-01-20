@@ -34,9 +34,15 @@ public class RegisterController {
                            @Param("password")String password,
                            @Param("email")String email,
                            ModelMap modelMap){
-        SysUser sysUser = sysUserService.findByUsernameOrEmail(username);
+        SysUser sysUser = null;
+        sysUser = sysUserService.findByUsername(username);
         if(sysUser != null){
-            modelMap.put("error","该用户/邮箱已注册");
+            modelMap.put("error","该用户已注册");
+            return "login";
+        }
+        sysUser = sysUserService.findByEmail(email);
+        if(sysUser != null){
+            modelMap.put("error","该邮箱已注册");
             return "login";
         }
         SysUser newUser = new SysUser();
@@ -54,6 +60,6 @@ public class RegisterController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
         subject.login(token);
-        return "index";
+        return "admin/index";
     }
 }

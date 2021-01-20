@@ -18,7 +18,7 @@
 		  <div class="layui-tab-content">
 		    <div class="layui-tab-item layui-show">
 		    	<form class="layui-form"  style="width: 90%;padding-top: 20px;">
-				  <div class="layui-form-item">
+				  <div class="layui-form-item" hidden>
 				    <label class="layui-form-label">ID：</label>
 				    <div class="layui-input-block">
 				      <input type="text" name="id" disabled  class="layui-input layui-disabled" th:value="${sysUser.id}">
@@ -27,7 +27,7 @@
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">用户名：</label>
 				    <div class="layui-input-block">
-				      <input type="text" name="username" required  class="layui-input layui-disabled" th:value="${sysUser.username}">
+				      <input type="text" name="username" required  class="layui-input" th:value="${sysUser.username}">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
@@ -45,16 +45,22 @@
 		    </div>
 		    <div class="layui-tab-item">
 		    	<form class="layui-form" v style="width: 90%;padding-top: 20px;">
+					<div class="layui-form-item" hidden>
+						<label class="layui-form-label">ID：</label>
+						<div class="layui-input-block">
+							<input type="text" name="id" disabled  class="layui-input layui-disabled" th:value="${sysUser.id}">
+						</div>
+					</div>
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">用户名：</label>
 				    <div class="layui-input-block">
-				      <input type="text" name="username" disabled  class="layui-input layui-disabled" value="admin">
+				      <input type="text" name="username" disabled  class="layui-input layui-disabled" th:value="${sysUser.username}">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">旧密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="password1" required lay-verify="required" placeholder="请输入密码"  class="layui-input">
+				      <input type="password" name="password1" required lay-verify="required" autocomplete="off" placeholder="请输入密码"  class="layui-input">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
@@ -81,27 +87,28 @@
 	<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
 	<script>
 		//Demo
-		layui.use(['form','element'], function(){
+		layui.use(['form','element','jquery'], function(){
 		  var form = layui.form();
 		  var element = layui.element();
+		  var $ = layui.jquery;
 		  form.render();
 		  //修改资料
 		  form.on('submit(adminInfo)', function(data){
-
 			  $.ajax({
-				  url:'/user/updateinfo',
+				  url:'../user/updateinfo',
 				  type:'post',
 				  data:data.field,
-				  dataType:"html",
+				  dataType:"json",
 				  success:function(data){
-					  if(data){
-						  layer.alert("提交成功！")
-					  }
-					  else{
-						  layer.alert("提交失败！")
+				  	debugger;
+					  if(data.error){
+						  layer.alert(data.error)
+					  } else{
+						  layer.alert(data.msg)
 					  }
 				  },
 				  error:function(e){
+				  	debugger;
 					  layer.alert("提交失败！")
 				  },
 

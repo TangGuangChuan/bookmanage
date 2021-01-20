@@ -27,12 +27,13 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog'], function() {
 				id: id
 			});
 			element.tabChange('tab', id);
-			
+
 		}
 		mainLayout.removeClass('hide-side');
 	});
 	//监听导航点击
 	element.on('nav(rightNav)', function(elem) {
+		debugger;
 		var navA = $(elem).find('a');
 		var id = navA.attr('data-id');
 		var url = navA.attr('data-url');
@@ -51,7 +52,7 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog'], function() {
 				id: id
 			});
 			element.tabChange('tab', id);
-			
+
 		}
 		mainLayout.removeClass('hide-side');
 	});
