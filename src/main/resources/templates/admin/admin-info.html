@@ -33,12 +33,12 @@
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">邮箱：</label>
 				    <div class="layui-input-block">
-				      <input type="text" name="email" required  lay-verify="required" placeholder="请输入邮箱" class="layui-input" th:value="${sysUser.email}">
+				      <input type="text" name="email" required  lay-verify="required|email" placeholder="请输入邮箱" class="layui-input" th:value="${sysUser.email}">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
 				    <div class="layui-input-block">
-				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo">立即提交</button>
+				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo">立即修改</button>
 				    </div>
 				  </div>
 				</form>
@@ -60,24 +60,24 @@
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">旧密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="password1" required lay-verify="required" autocomplete="off" placeholder="请输入密码"  class="layui-input">
+				      <input type="password" name="password1" lay-verify="password" autocomplete="off" placeholder="请输入密码"  class="layui-input">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">新密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="password2" required lay-verify="required" placeholder="请输入密码"  class="layui-input">
+				      <input type="password" name="password2" lay-verify="password" placeholder="请输入密码"  class="layui-input">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">重复密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="password3" required lay-verify="required" placeholder="请输入密码"  class="layui-input">
+				      <input type="password" name="password3" lay-verify="password" placeholder="请输入密码"  class="layui-input">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
 				    <div class="layui-input-block">
-				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword">立即提交</button>
+				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword">立即修改</button>
 				    </div>
 				  </div>
 				</form>
@@ -85,22 +85,25 @@
 		  </div>
 		</div>
 	<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
-	<script>
+	<script type="text/javascript">
 		//Demo
 		layui.use(['form','element','jquery'], function(){
 		  var form = layui.form();
 		  var element = layui.element();
 		  var $ = layui.jquery;
 		  form.render();
+		  //自定义验证规则
+		  form.verify({
+			password: [/(.+){6,12}$/, '密码必须6到12位']
+		  });
 		  //修改资料
 		  form.on('submit(adminInfo)', function(data){
 			  $.ajax({
-				  url:'../user/updateinfo',
+				  url:'updateinfo',
 				  type:'post',
 				  data:data.field,
 				  dataType:"json",
 				  success:function(data){
-				  	debugger;
 					  if(data.error){
 						  layer.alert(data.error)
 					  } else{
@@ -108,8 +111,7 @@
 					  }
 				  },
 				  error:function(e){
-				  	debugger;
-					  layer.alert("提交失败！")
+					  layer.alert("修改失败！")
 				  },
 
 			  });
@@ -117,29 +119,29 @@
 		  });
 		  //修改密码
 		   form.on('submit(adminPassword)', function(data){
-			   if (!data.field.ccss){
-				   layer.alert('请选择是否有财产损失');
-				   // alert('请选择是否有人身伤害')
+		   	debugger;
+			   if (data.field.password1 == data.field.password2){
+				   layer.alert('新密码不能与旧密码相同');
+				   return false;
 			   }
-			   if (!data.field.rssh){
-				   layer.alert('请选择是否有人身伤害');
-				   // alert('请选择是否有人身伤害')
+			   if (data.field.password2 != data.field.password3){
+				   layer.alert('两次密码输入不一致');
+				   return false;
 			   }
 			   $.ajax({
-				   url:'/plus/diy.php',
+				   url:'updatepwd',
 				   type:'post',
 				   data:data.field,
-				   dataType:"html",
+				   dataType:"json",
 				   success:function(data){
-					   if(data){
-						   layer.alert("提交成功！")
-					   }
-					   else{
-						   layer.alert("提交失败！")
+					   if(data.error){
+						   layer.alert(data.error)
+					   } else{
+						   layer.alert(data.msg)
 					   }
 				   },
 				   error:function(e){
-					   layer.alert("提交失败！")
+					   layer.alert("修改失败！")
 				   },
 
 			   });

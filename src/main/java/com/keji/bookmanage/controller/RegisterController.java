@@ -14,9 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther tangguangchuan
@@ -30,20 +33,20 @@ public class RegisterController {
     SysRoleService sysRoleService;
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public String register(@Param("username")String username,
-                           @Param("password")String password,
-                           @Param("email")String email,
-                           ModelMap modelMap){
+    public @ResponseBody Map<String,Object> register(@Param("username")String username,
+                    @Param("password")String password,
+                    @Param("email")String email){
+        Map<String,Object> map = new HashMap<>();
         SysUser sysUser = null;
         sysUser = sysUserService.findByUsername(username);
         if(sysUser != null){
-            modelMap.put("error","该用户已注册");
-            return "login";
+            map.put("error","该用户已注册");
+            return map;
         }
         sysUser = sysUserService.findByEmail(email);
         if(sysUser != null){
-            modelMap.put("error","该邮箱已注册");
-            return "login";
+            map.put("error","该邮箱已注册");
+            return map;
         }
         SysUser newUser = new SysUser();
         newUser.setUsername(username);
@@ -60,6 +63,7 @@ public class RegisterController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
         subject.login(token);
-        return "admin/index";
+        map.put("msg","注册成功");
+        return map;
     }
 }

@@ -50,23 +50,23 @@
 								</form>
 							</div>
 							<div class="layui-tab-item">
-								<form class="layui-form" th:action="@{/register}" method="post">
+								<form class="layui-form">
 									<div class="layui-form-item">
-										<input type="text" name="username" required lay-verify="required" placeholder="用户名"  class="layui-input">
+										<input type="text" name="username" lay-verify="required" placeholder="用户名"  class="layui-input">
 									</div>
 									<div class="layui-form-item">
-										<input type="password" name="password" required lay-verify="required" placeholder="密码"  class="layui-input">
+										<input type="password" name="password" lay-verify="password" placeholder="密码"  class="layui-input">
 									</div>
 									<div class="layui-form-item">
-										<input type="text" name="email" required lay-verify="required" placeholder="邮箱"  class="layui-input">
+										<input type="text" name="email" lay-verify="required|email" placeholder="邮箱"  class="layui-input">
 									</div>
 									<div class="layui-form-item m-login-btn">
 										<div class="layui-inline" align="center">
-											<button class="layui-btn layui-btn-normal"  type="submit">注册</button>
+											<button class="layui-btn layui-btn-normal" lay-submit lay-filter="register" >注册</button>
 										</div>
 									</div>
 									<div class="layui-form-item">
-										<p th:text="${error}" style="color: red;text-align: center"></p>
+										<p th:text="${error}" style="color: red;text-align: center" id="error"></p>
 									</div>
 
 								</form>
@@ -79,27 +79,38 @@
 		</div>
 		<script src="../static/admin/layui/layui.js" th:src="@{/admin/layui/layui.js}"></script>
 		<script>
-			if(window.history.replaceState)
-			{
-				window.history.replaceState(null, null, window.location.href)
-			}
-			layui.use(['form','element'], function(){
+			layui.use(['form','element','jquery'], function(){
 				var form = layui.form();
 				var element = layui.element();
+				var $ = layui.jquery
 				form.render();
 
 				//自定义验证规则
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					password: [/(.+){6,12}$/, '密码必须6到12位'],
-					verity: [/(.+){6}$/, '验证码必须是6位'],
-
+					password: [/(.+){6,12}$/, '密码必须6到12位']
 				});
 
+				//注册
+				form.on('submit(register)', function(data){
+					$.ajax({
+						url:'register',
+						type:'post',
+						data:data.field,
+						dataType:"json",
+						success:function(data){
+							if(data.error){
+								$("#error").text(data.error);
+							} else{
+								window.location.href='index';
+							}
+						},
+						error:function(e){
+							$("#error").text("注册异常");
+						},
+
+					});
+					return false;
+				});
 			});
 		</script>
 	</body>

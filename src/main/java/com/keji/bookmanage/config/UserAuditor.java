@@ -19,7 +19,11 @@ public class UserAuditor implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         Object obj = SecurityUtils.getSubject().getPrincipal();
-        return Optional.ofNullable(obj == null ? null : obj.toString());
+        if(obj == null){
+            return null;
+        }
+        SysUser user = (SysUser) obj;
+        return Optional.ofNullable(user.getUsername());
     }
 
 }

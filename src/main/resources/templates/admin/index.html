@@ -67,7 +67,7 @@
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
-					    <a href="#" th:src="@{/user/info}" data-id='5' data-text="个人信息"><span shiro:principal property="username"></span></a>
+					    <a href="#" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息"><span shiro:principal property="username"></span></a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}">退出</a></li>
 					</ul>
