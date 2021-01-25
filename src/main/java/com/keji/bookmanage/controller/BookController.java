@@ -5,6 +5,7 @@ import com.keji.bookmanage.service.BookInfoService;
 import com.keji.bookmanage.util.ResponseEntity;
 import com.keji.bookmanage.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +27,7 @@ public class BookController {
     public String bookList(){
         return "admin/booklist";
     }
-    @RequestMapping(value = "/book/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/book/listinfo",method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity bookPage(){
         List<BookInfo> infoList = bookInfoService.findAll();

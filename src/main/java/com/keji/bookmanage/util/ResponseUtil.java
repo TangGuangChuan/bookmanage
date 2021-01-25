@@ -16,6 +16,7 @@ public class ResponseUtil {
             ResponseEntity resp = new ResponseEntity();
             resp.setCode(ResponseEnum.SUCCESS.getCode());
             resp.setMsg(ResponseEnum.SUCCESS.getMsg());
+            resp.setCount(100);
             resp.setData(object);
             return resp;
         }

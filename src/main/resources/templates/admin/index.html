@@ -52,7 +52,7 @@
 				    <a href="javascript:;" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
 				  </li>
 				  <li class="layui-nav-item">
-				  	<a href="javascript:;" th:attr="data-url=@{/system.html}" data-id='6' data-text="系统设置"><i class="iconfont">&#xe60b;</i>系统设置</a>
+				  	<a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='6' data-text="图书列表"><i class="iconfont">&#xe60b;</i>系统设置</a>
 				  </li>
 				</ul>
 			</div>
@@ -67,9 +67,9 @@
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
-					    <a href="#" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息"><span shiro:principal property="username"></span></a>
+					    <a href="#" style="color: black;" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息"><span shiro:principal property="username" ></span></a>
 					  </li>
-					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}">退出</a></li>
+					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}" style="color: black;">退出</a></li>
 					</ul>
 				</div>
 				<!--主体内容-->
