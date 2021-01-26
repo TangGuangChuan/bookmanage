@@ -15,7 +15,7 @@ public class ResponseEntity implements Serializable {
 
     private Integer code;
     private String msg;
-    private int count;
+    private long count;
     private Object data;
 
 }

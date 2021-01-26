@@ -80,8 +80,8 @@
 		<script src="../static/admin/layui/layui.js" th:src="@{/admin/layui/layui.js}"></script>
 		<script>
 			layui.use(['form','element','jquery'], function(){
-				var form = layui.form();
-				var element = layui.element();
+				var form = layui.form;
+				var element = layui.element;
 				var $ = layui.jquery
 				form.render();
 

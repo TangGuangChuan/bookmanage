@@ -1,6 +1,8 @@
 package com.keji.bookmanage.service;
 
 import com.keji.bookmanage.entity.BookInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,4 +12,11 @@ import java.util.List;
  */
 public interface BookInfoService {
     List<BookInfo> findAll();
+
+    @Transactional
+    void saveAndFlush(BookInfo bookInfo);
+
+    Page<BookInfo> findAllByPage(int page,int limit);
+
+    Page<BookInfo> serchBook(int page, int limit, String bookname, String auther, String type);
 }

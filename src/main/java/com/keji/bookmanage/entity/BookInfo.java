@@ -3,8 +3,7 @@ package com.keji.bookmanage.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * @auther tangguangchuan
@@ -18,5 +17,8 @@ public class BookInfo extends BaseEntity {
     private String bookname;
     private String auther;
     private String introduce;
-    private String number;
+    private int number;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id")
+    private BookType bookType;
 }

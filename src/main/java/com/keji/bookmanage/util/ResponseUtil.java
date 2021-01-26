@@ -12,11 +12,24 @@ public class ResponseUtil {
          * @param object 返回数据
          * @return
          */
+        public static ResponseEntity success(Object object,long count) {
+            ResponseEntity resp = new ResponseEntity();
+            resp.setCode(ResponseEnum.SUCCESS.getCode());
+            resp.setMsg(ResponseEnum.SUCCESS.getMsg());
+            resp.setCount(count);
+            resp.setData(object);
+            return resp;
+        }
+
+        /**
+         * 成功返回
+         * @param object 返回数据
+         * @return
+         */
         public static ResponseEntity success(Object object) {
             ResponseEntity resp = new ResponseEntity();
             resp.setCode(ResponseEnum.SUCCESS.getCode());
             resp.setMsg(ResponseEnum.SUCCESS.getMsg());
-            resp.setCount(100);
             resp.setData(object);
             return resp;
         }
