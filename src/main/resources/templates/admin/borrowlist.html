@@ -20,6 +20,12 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
+                    <label class="layui-form-label">借出用户</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="bookname" id="username" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-label">书名</label>
                     <div class="layui-input-block">
                         <input type="text" name="bookname" id="bookname" placeholder="请输入" autocomplete="off" class="layui-input">
@@ -32,16 +38,7 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">类型</label>
-                    <div class="layui-input-block">
-                        <select name="type" id="searchType">
-                            <option value="">请选择图书类型</option>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-useradmin" id="searchBook">
+                    <button class="layui-btn layuiadmin-btn-useradmin" id="searchBorrowRecord">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                     </button>
                 </div>
@@ -49,151 +46,10 @@
         </div>
 
         <div class="layui-card-body">
-            <table class="layui-table" id="bookinfo" lay-filter="bookinfoTable"></table>
+            <table class="layui-table" id="borrowRecord" lay-filter="borrowRecordTable"></table>
         </div>
     </div>
 </div>
-<!---------------------添加图书表格 start------------------------------->
-<form class="layui-form" id="addBook" style="display: none;padding: 20px 30px 0 0" lay-filter="insertFilter">
-    <div class="layui-form-item">
-        <label class="layui-form-label">书名</label>
-        <div class="layui-input-inline">
-            <input type="text" name="bookname" placeholder="请输入书名" required autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">作者</label>
-        <div class="layui-input-inline">
-            <input type="text" name="auther" placeholder="输入作者" required autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">类型</label>
-        <div class="layui-input-inline">
-            <select name="type" id="addType" lay-verify="required">
-                <option value="">请选择图书类型</option>
-            </select>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">数量</label>
-        <div class="layui-input-inline">
-            <input type="text" name="number" placeholder="输入数量" lay-verify="number" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">简介</label>
-        <div class="layui-input-inline">
-            <textarea type="text" name="introduce" autocomplete="off" class="layui-textarea"></textarea>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="addSubmit">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
-<!---------------------添加图书表格 end------------------------------->
-
-<!---------------------修改图书表格 start------------------------------->
-<form class="layui-form" id="updateBook" style="display: none;padding: 20px 30px 0 0" lay-filter="updateFilter">
-    <div class="layui-form-item">
-        <label class="layui-form-label">Id</label>
-        <div class="layui-input-inline">
-            <input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">书名</label>
-        <div class="layui-input-inline">
-            <input type="text" name="bookname" placeholder="请输入书名" required autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">作者</label>
-        <div class="layui-input-inline">
-            <input type="text" name="auther" placeholder="输入作者" required autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">类型</label>
-        <div class="layui-input-inline">
-            <select name="type" id="updateType" lay-verify="required">
-                <option value="">请选择图书类型</option>
-            </select>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">数量</label>
-        <div class="layui-input-inline">
-            <input type="text" name="number" placeholder="输入数量" lay-verify="number" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">简介</label>
-        <div class="layui-input-inline">
-            <textarea type="text" name="introduce" autocomplete="off" class="layui-textarea"></textarea>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="updateSubmit">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
-<!---------------------修改图书表格 end------------------------------->
-
-<!---------------------借书表格 start------------------------------->
-<form class="layui-form" id="borrowBook" style="display: none;padding: 20px 30px 0 0" lay-filter="borrowFilter">
-    <div class="layui-form-item">
-        <label class="layui-form-label">Id</label>
-        <div class="layui-input-inline">
-            <input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">书名</label>
-        <div class="layui-input-inline">
-            <input type="text" name="bookname" disabled autocomplete="off" class="layui-input layui-disabled">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">作者</label>
-        <div class="layui-input-inline">
-            <input type="text" name="auther" disabled autocomplete="off" class="layui-input layui-disabled">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">类型</label>
-        <div class="layui-input-inline">
-            <select name="type" disabled class="layui-disabled">
-            </select>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">借阅天数</label>
-        <div class="layui-input-inline">
-            <select name="borrowDays" lay-verify="required">
-                <options value=""></options>
-                <options value="7">7天</options>
-                <options value="15">15天</options>
-                <options value="30">30天</options>
-            </select>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="borrowSubmit">立即借出</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
-<!---------------------修改图书表格 end------------------------------->
 
 <script type="text/html" id="toolbar1">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="borrow">借阅</a>
@@ -219,20 +75,6 @@
         var $ = layui.jquery;
         var form = layui.form;
         var layer = layui.layer;
-        //查询并给图书类型下拉框赋值
-        $.ajax({
-            url: '../book/gettype',
-            dataType: 'json',
-            type: 'get',
-            success: function (data) {
-                $.each(data.data,function (index,value) {
-                    $("#addType").append(new Option(value.typeName,value.typeCode));
-                    $("#searchType").append(new Option(value.typeName,value.typeCode));
-                    $("#updateType").append(new Option(value.typeName,value.typeCode));
-                })
-                layui.form.render('select');//重新渲染,固定写法
-            }
-        })
         //table数据初始化
         table.render({
             elem: '#bookinfo',

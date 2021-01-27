@@ -53,4 +53,16 @@ public class ResponseUtil {
             resp.setMsg(responseEnum.getMsg());
             return resp;
         }
+
+        /**
+         *
+         * @param msg
+         * @return
+         */
+        public static  ResponseEntity error(String msg){
+            ResponseEntity resp = new ResponseEntity();
+            resp.setCode(501);
+            resp.setMsg(msg);
+            return resp;
+        }
 }

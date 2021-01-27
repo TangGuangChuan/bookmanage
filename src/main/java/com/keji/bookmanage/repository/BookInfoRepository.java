@@ -14,4 +14,5 @@ import java.util.List;
  */
 @Repository
 public interface BookInfoRepository extends JpaRepository<BookInfo, Long> , QuerydslPredicateExecutor<BookInfo> {
+    BookInfo findByBookname(String bookname);
 }

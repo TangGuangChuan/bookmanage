@@ -20,7 +20,7 @@
 				    <a href="javascript:;"><i class="iconfont">&#xe607;</i>图书管理</a>
 				    <dl class="layui-nav-child">
 				      <dd><a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='1' data-text="图书列表"><span class="l-line"></span>图书列表</a></dd>
-				      <dd><a href="javascript:;" data-url="menu2.html" data-id='2' data-text="借阅记录"><span class="l-line"></span>借阅记录</a></dd>
+				      <dd><a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='2' data-text="借阅记录"><span class="l-line"></span>借阅记录</a></dd>
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
@@ -52,7 +52,7 @@
 				    <a href="javascript:;" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
 				  </li>
 				  <li class="layui-nav-item">
-				  	<a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='6' data-text="图书列表"><i class="iconfont">&#xe60b;</i>系统设置</a>
+				  	<a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='6' data-text="图书列表"><i class="iconfont">&#xe60b;</i>图书列表</a>
 				  </li>
 				</ul>
 			</div>
@@ -94,11 +94,6 @@
 
 			</div>
 		</div>
-		<script type="text/javascript">
-			// var scope={
-			// 	link:'./welcome.html'
-			// }
-		</script>
 		<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
 		<script src="../static/admin/js/common.js" type="text/javascript" th:src="@{/admin/js/common.js}"></script>
 		<script src="../static/admin/js/main.js" type="text/javascript" th:src="@{/admin/js/main.js}"></script>

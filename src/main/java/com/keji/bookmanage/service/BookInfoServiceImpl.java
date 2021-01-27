@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.beans.Expression;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,5 +58,31 @@ public class BookInfoServiceImpl implements BookInfoService {
         Pageable pageable = PageRequest.of(page-1,limit,Sort.by(Sort.Direction.DESC,"createAt"));
 
         return bookInfoRepository.findAll(expression,pageable);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        bookInfoRepository.deleteById(id);
+    }
+
+    @Override
+    public BookInfo selectById(Long id) {
+        return bookInfoRepository.findById(id).get();
+    }
+
+    @Override
+    public BookInfo selectByBookname(String bookname) {
+        return bookInfoRepository.findByBookname(bookname);
+    }
+
+    @Override
+    public void updateById(BookInfo bookInfo) {
+        bookInfoRepository.saveAndFlush(bookInfo);
+    }
+
+    @Override
+    public void deleteByIds(Long[] ids) {
+        List<BookInfo> bookInfos = bookInfoRepository.findAllById(Arrays.asList(ids));
+        bookInfoRepository.deleteInBatch(bookInfos);
     }
 }

@@ -1,6 +1,5 @@
 package com.keji.bookmanage.controller;
 
-import com.keji.bookmanage.contants.ResponseEnum;
 import com.keji.bookmanage.entity.BookInfo;
 import com.keji.bookmanage.entity.BookType;
 import com.keji.bookmanage.service.BookInfoService;
@@ -10,11 +9,9 @@ import com.keji.bookmanage.util.ResponseUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,19 +23,19 @@ import java.util.List;
  * @date 2021/1/21 下午1:55
  */
 @Controller
-public class BookController {
+public class BorrowRecordController {
 
     @Autowired
     BookInfoService bookInfoService;
     @Autowired
     BookTypeSevice bookTypeSevice;
 
-    @RequestMapping(value = "/book/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/borrow/list",method = RequestMethod.GET)
     public String bookList(){
-        return "admin/booklist";
+        return "admin/borrowlist";
     }
 
-    @RequestMapping(value = "/book/info",method = RequestMethod.GET)
+    @RequestMapping(value = "/borrow/info",method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity bookInfo(@Param("page") int page,
                             @Param("limit")int limit){

@@ -21,4 +21,6 @@ public class BookInfo extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
     private BookType bookType;
+    //借阅次数
+    private int borrowNum;
 }
