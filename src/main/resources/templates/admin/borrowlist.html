@@ -20,21 +20,26 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">借出用户</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="bookname" id="username" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
                     <label class="layui-form-label">书名</label>
                     <div class="layui-input-block">
                         <input type="text" name="bookname" id="bookname" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">作者</label>
+                    <label class="layui-form-label">借阅用户</label>
                     <div class="layui-input-block">
-                        <input type="text" name="auther" id="auther" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="username" id="username" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <select name="status" id="status">
+                            <option value="">请选择状态</option>
+                            <option value="0">未还</option>
+                            <option value="1">逾期</option>
+                            <option value="2">已还</option>
+                        </select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -61,12 +66,8 @@
     </shiro:hasPermission>
 </script>
 <script type="text/html" id="toolbar2">
-    <shiro:hasPermission name="admin:creat">
-        <a class="layui-btn layui-btn-sm" lay-event="add">添加</a>
-    </shiro:hasPermission>
-    <shiro:hasPermission name="admin:delete">
-        <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteMany">批量删除</a>
-    </shiro:hasPermission>
+    <a shiro:hasPermission="admin:delete" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteMany">批量删除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-primary" lay-event="myBorrow">我的借阅</a>
 </script>
 <script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
 <script>
@@ -77,8 +78,8 @@
         var layer = layui.layer;
         //table数据初始化
         table.render({
-            elem: '#bookinfo',
-            url: '../book/info',
+            elem: '#borrowRecord',
+            url: '../borrow/info',
             toolbar: "#toolbar2",//开启头部工具栏，并为其绑定左侧模板
             limit:5,
             limits:[1,5,10,15,20],
@@ -86,35 +87,59 @@
                 [
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'id', title: 'ID', sort: true, fixed: 'left'},
-                    {field: 'bookname', title: '书名'},
-                    {field: 'auther', title: '作者'},
-                    {field: 'typename', title: '类型',
+                    {field: 'bookname', title: '书名',
                         templet: function (data) {
-                            return data.bookType.typeName;
+                            return data.bookInfo.bookname;
                         }
                     },
-                    {field: 'introduce', title: '简介'},
-                    {field: 'number', title: '库存数量'},
-                    {fixed: 'right', title: '操作', toolbar: '#toolbar1'}
+                    {field: 'auther', title: '作者',
+                        templet: function (data) {
+                            return data.bookInfo.auther;
+                        }
+                    },
+                    {field: 'typename', title: '类型',
+                        templet: function (data) {
+                            return data.bookInfo.bookType.typeName;
+                        }
+                    },
+                    {field: 'username', title: '借阅用户',
+                        templet: function (data) {
+                            return data.sysUser.username;
+                        }
+                    },
+                    {field: 'createAt', title: '借出时间',
+                        templet: function (data) {
+                            return data.createAt.replace('T',' ');
+                        }
+                    },
+                    {field: 'returnDate', title: '归还时间',
+                        templet: function (data) {
+                            return data.returnDate.replace('T',' ');
+                        }
+                    },
+                    {field: 'status', title: '状态',
+                        templet: function (data) {
+                            if(data.status == 0){
+                                return "<span class='layui-badge layui-bg-orange'>未还</span>";
+                            }
+                            if(data.status == 1){
+                                return "<span class='layui-badge layui-bg-red'>逾期</span>";
+                            }
+                            if(data.status == 2){
+                                return "<span class='layui-badge layui-bg-green'>逾期</span>";
+                            }
+                        }
+                    },
                 ]
             ],
             page: true
         });
 
         //----------------toolbar2（表头工具条） 绑定----------------------
-        table.on('toolbar(bookinfoTable)', function (obj) {
+        table.on('toolbar(borrowRecordTable)', function (obj) {
             //获取到table表格的id
             var checkStatus = table.checkStatus(obj.config.id);
-            console.log(obj.config.id)
-            if (obj.event == 'add') {
-
-                layer.open({
-                    type: 1,
-                    content: $("#addBook"),
-                    area: ["500px", "500px"],
-                    title: '添加图书'
-                })
-            } else if (obj.event == 'deleteMany') {
+            if (obj.event == 'deleteMany') {
                 var array = checkStatus.data;
                 if (array.length == 0) {
                     layer.msg("请至少选择一行", {icon: 5, time: 2000});
@@ -135,16 +160,14 @@
                                 //获取当前页数
                                 var currpage = $(".layui-laypage-em").next().html();
                                 //删除后当前页无数据刷新需要回退一页
-                                console.log(table.cache['bookinfo'].length);
-                                console.log(currpage);
-                                if (table.cache['bookinfo'].length == ids.length && currpage > 1) {
-                                    table.reload('bookinfo', {
+                                if (table.cache['borrowRecord'].length == ids.length && currpage > 1) {
+                                    table.reload('borrowRecord', {
                                         page: {
                                             curr: currpage - 1
                                         }
                                     })
                                 } else {
-                                    table.reload('bookinfo')
+                                    table.reload('borrowRecord')
                                 }
                             } else {
                                 layer.msg("删除失败", {icon: 5, time: 2000});
@@ -155,36 +178,15 @@
             }
         });
         //----------------------------------------------
-		//-------------------添加按钮绑定事件 start---------------------------
-		form.on('submit(addSubmit)',function () {
-			$.ajax({
-				type:"post",
-				url:"add",
-				data:$("#addBook").serialize(),
-				success:function (data) {
-					if(data.code == 0){
-						/*layer.msg("图书添加成功", {icon: 1,time:3000});*/
-						$("#addBook")[0].reset();
-						layer.confirm("添加成功,要退出添加界面吗？",{icon: 1},function (index) {
-							layer.closeAll();
-						})
-						table.reload('bookinfo')
-					}
-				},
-				dateType:"json"
-			});
-			return false;
-		});
-		//-------------------添加按钮绑定事件 end---------------------------
 
         //---------------search start------------------
-        $("#searchBook").click(function () {
-            table.reload('bookinfo',{
+        $("#searchBorrowRecord").click(function () {
+            table.reload('borrowRecord',{
                 url: 'search',
                 where:{
                     bookname: $("#bookname").val(),
-                    auther: $("#auther").val(),
-                    type: $("#searchType").val()
+                    username: $("#username").val(),
+                    type: $("#status").val()
                 },
                 page:{
                     curr:1 //重新从第一页开始
@@ -248,52 +250,10 @@
                     })
                 })
 
-            }else if(obj.event == 'borrow'){
-                $.ajax({
-                    url:"selectbyid",
-                    data:"id="+obj.data.id,
-                    dataType:"json",
-                    success:function (data) {
-                        //val中填写form表单lay-Filter的值
-                        form.val('updateFilter',{
-                            id:data.data.id,
-                            bookname:data.data.bookname,
-                            auther:data.data.auther,
-                            introduce:data.data.introduce,
-                            type:data.data.bookType.typeCode,
-                            number:data.data.number
-                        })
-                    }
-                })
-                layer.open({
-                    type:1,
-                    content:$("#updateBook"),
-                    area:["500px","500px"],
-                    title:'修改'
-                })
             }
         })
         //----------------------------------------------
 
-        //-------------------修改按钮绑定事件 start-------------------------
-        form.on('submit(updateSubmit)',function () {
-            $.ajax({
-                type:"post",
-                url:"updatebyid",
-                data:$("#updateBook").serialize(),
-                success:function (data) {
-                    console.log(data)
-                    if(data.code == 0){
-                        layer.confirm("修改成功,要退出修改界面吗？",{icon: 1},function (index) {
-                            layer.closeAll();
-                        })
-                        table.reload('bookinfo')
-                    }
-                },
-                dateType:"json"
-            });
-            return false;
-        });
     });
 </script>
 </body>

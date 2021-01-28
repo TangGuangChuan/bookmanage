@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -30,11 +32,11 @@ public class BaseEntity implements Serializable {
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createAt;
+    private LocalDateTime createAt;
 
     @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private  Date updateAt;
+    private  LocalDateTime updateAt;
 
     public Long getId() {
         return id;
@@ -60,7 +62,7 @@ public class BaseEntity implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public Date getCreateAt() {
+    public LocalDateTime getCreateAt() {
         return createAt;
     }
 
@@ -69,10 +71,10 @@ public class BaseEntity implements Serializable {
      */
     @PrePersist
     public void setCreateAt() {
-        this.createAt = new Date();
+        this.createAt = LocalDateTime.now();
     }
 
-    public Date getUpdateAt() {
+    public LocalDateTime getUpdateAt() {
         return updateAt;
     }
 
@@ -81,6 +83,6 @@ public class BaseEntity implements Serializable {
      */
     @PreUpdate
     public void setUpdateAt() {
-        this.updateAt = new Date();
+        this.updateAt = LocalDateTime.now();
     }
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class BorrowRecord extends BaseEntity {
-    //状态:1未还,2已还,3逾期
+    //状态:0未还,1逾期,2已还
     private int status;
     //用户信息
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,5 +32,5 @@ public class BorrowRecord extends BaseEntity {
     //借阅天数
     private int borrowDays;
     //归还时间
-    private Date returnDate;
+    private LocalDateTime returnDate;
 }

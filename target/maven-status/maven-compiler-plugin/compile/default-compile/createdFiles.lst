@@ -1,0 +1,7 @@
+com/keji/bookmanage/entity/QSysPermission.class
+com/keji/bookmanage/entity/QSysRole.class
+com/keji/bookmanage/entity/QBookType.class
+com/keji/bookmanage/entity/QBorrowRecord.class
+com/keji/bookmanage/entity/QBaseEntity.class
+com/keji/bookmanage/entity/QSysUser.class
+com/keji/bookmanage/entity/QBookInfo.class

@@ -3,10 +3,15 @@ package com.keji.bookmanage.controller;
 import com.keji.bookmanage.contants.ResponseEnum;
 import com.keji.bookmanage.entity.BookInfo;
 import com.keji.bookmanage.entity.BookType;
+import com.keji.bookmanage.entity.BorrowRecord;
+import com.keji.bookmanage.entity.SysUser;
 import com.keji.bookmanage.service.BookInfoService;
 import com.keji.bookmanage.service.BookTypeSevice;
+import com.keji.bookmanage.service.BorrowRecordService;
+import com.keji.bookmanage.service.SysUserService;
 import com.keji.bookmanage.util.ResponseEntity;
 import com.keji.bookmanage.util.ResponseUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.security.auth.Subject;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -32,6 +39,8 @@ public class BookController {
     BookInfoService bookInfoService;
     @Autowired
     BookTypeSevice bookTypeSevice;
+    @Autowired
+    BorrowRecordService borrowRecordService;
 
     @RequestMapping(value = "/book/list",method = RequestMethod.GET)
     public String bookList(){
@@ -132,6 +141,23 @@ public class BookController {
         bookInfo.setIntroduce(introduce);
         bookInfo.setNumber(number);
         bookInfoService.updateById(bookInfo);
+        return ResponseUtil.success();
+    }
+
+    @RequestMapping(value = "/book/borrow",method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity borrowBook(@Param("bookname")String bookname,
+                                                   @Param("borrowDays")int borrowDays){
+
+        BookInfo bookInfo = bookInfoService.selectByBookname(bookname);
+        if(bookInfo.getNumber() < 1){ //判断图书库存量>1
+            return ResponseUtil.error("该图书库存量不足,可等用户归还后再借阅!!!");
+        }
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        List<BorrowRecord> recordList = borrowRecordService.findByUsername(user.getUsername());
+        if(recordList.size() > 2){//限制同一用户只能同时借三本书
+            return ResponseUtil.error("同一用户只能借三本书,请先归还再借阅!!!");
+        }
+        borrowRecordService.saveAndFlush(bookInfo,user,borrowDays);
         return ResponseUtil.success();
     }
 }

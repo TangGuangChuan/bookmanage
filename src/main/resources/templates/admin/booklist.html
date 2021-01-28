@@ -102,19 +102,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label">Id</label>
         <div class="layui-input-inline">
-            <input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled">
+            <input style="background:#CCCCCC" type="text" name="id" readonly="true" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">书名</label>
         <div class="layui-input-inline">
-            <input type="text" name="bookname" placeholder="请输入书名" required autocomplete="off" class="layui-input">
+            <input type="text" name="bookname" placeholder="请输入书名" lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">作者</label>
         <div class="layui-input-inline">
-            <input type="text" name="auther" placeholder="输入作者" required autocomplete="off" class="layui-input">
+            <input type="text" name="auther" placeholder="输入作者" lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -141,7 +141,6 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="updateSubmit">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
@@ -150,38 +149,30 @@
 <!---------------------借书表格 start------------------------------->
 <form class="layui-form" id="borrowBook" style="display: none;padding: 20px 30px 0 0" lay-filter="borrowFilter">
     <div class="layui-form-item">
-        <label class="layui-form-label">Id</label>
-        <div class="layui-input-inline">
-            <input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled">
-        </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label">书名</label>
         <div class="layui-input-inline">
-            <input type="text" name="bookname" disabled autocomplete="off" class="layui-input layui-disabled">
+            <input style="background:#CCCCCC" type="text" name="bookname" readonly="true" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">作者</label>
         <div class="layui-input-inline">
-            <input type="text" name="auther" disabled autocomplete="off" class="layui-input layui-disabled">
+            <input style="background:#CCCCCC" type="text" name="auther" readonly="true" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">类型</label>
         <div class="layui-input-inline">
-            <select name="type" disabled class="layui-disabled">
-            </select>
+            <input style="background:#CCCCCC" type="text" name="type" readonly="true" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">借阅天数</label>
         <div class="layui-input-inline">
             <select name="borrowDays" lay-verify="required">
-                <options value=""></options>
-                <options value="7">7天</options>
-                <options value="15">15天</options>
-                <options value="30">30天</options>
+                <option value="7">7天</option>
+                <option value="15">15天</option>
+                <option value="30">30天</option>
             </select>
         </div>
     </div>
@@ -189,7 +180,6 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="borrowSubmit">立即借出</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
@@ -253,6 +243,7 @@
                     },
                     {field: 'introduce', title: '简介'},
                     {field: 'number', title: '库存数量'},
+                    {field: 'borrowNum', title: '借阅次数'},
                     {fixed: 'right', title: '操作', toolbar: '#toolbar1'}
                 ]
             ],
@@ -413,21 +404,18 @@
                     dataType:"json",
                     success:function (data) {
                         //val中填写form表单lay-Filter的值
-                        form.val('updateFilter',{
-                            id:data.data.id,
+                        form.val('borrowFilter',{
                             bookname:data.data.bookname,
                             auther:data.data.auther,
-                            introduce:data.data.introduce,
-                            type:data.data.bookType.typeCode,
-                            number:data.data.number
+                            type:data.data.bookType.typeCode
                         })
                     }
                 })
                 layer.open({
                     type:1,
-                    content:$("#updateBook"),
+                    content:$("#borrowBook"),
                     area:["500px","500px"],
-                    title:'修改'
+                    title:'借阅图书'
                 })
             }
         })
@@ -446,12 +434,36 @@
                             layer.closeAll();
                         })
                         table.reload('bookinfo')
+                    }else {
+                        layer.msg(data.msg,{icon:5,time:3000});
                     }
                 },
                 dateType:"json"
             });
             return false;
         });
+        //-------------------借阅按钮绑定事件 start-------------------------
+        form.on('submit(borrowSubmit)',function () {
+            console.log($("#borrowBook").serialize());
+            $.ajax({
+                type:"post",
+                url:"borrow",
+                data:$("#borrowBook").serialize(),
+                success:function (data) {
+                    if(data.code == 0){
+                        layer.confirm("借阅成功,要退出借阅界面吗？",{icon: 1},function (index) {
+                            layer.closeAll();
+                        })
+                        table.reload('bookinfo')
+                    }else{
+                        layer.msg(data.msg,{icon:5,time:3000});
+                    }
+                },
+                dateType:"json"
+            });
+            return false;
+        });
+
     });
 </script>
 </body>

@@ -1,8 +1,26 @@
 package com.keji.bookmanage.service;
 
+import com.google.common.base.Strings;
+import com.keji.bookmanage.entity.BookInfo;
 import com.keji.bookmanage.entity.BorrowRecord;
+import com.keji.bookmanage.entity.QBorrowRecord;
+import com.keji.bookmanage.entity.SysUser;
+import com.keji.bookmanage.repository.BorrowRecordRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @auther tangguangchuan
@@ -10,33 +28,65 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BorrowRecordServiceImpl implements BorrowRecordService {
-    @Override
-    public void saveAndFlush(BorrowRecord borrowRecord) {
+    @Autowired
+    BookInfoService bookInfoService;
+    @Autowired
+    BorrowRecordRepository borrowRecordRepository;
 
+    @Override
+    public void saveAndFlush(BookInfo bookInfo, SysUser user,int borrowDays) {
+        BorrowRecord borrowRecord = new BorrowRecord();
+        //借阅一次库存量减一,借阅记录加一
+        bookInfo.setNumber(bookInfo.getNumber()-1);
+        bookInfo.setBorrowNum(bookInfo.getBorrowNum()+1);
+        //设置归还时间为当前时间加上借阅天数
+        LocalDateTime now = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        now = now.plusDays(borrowDays);
+        //设置借阅用户为当前登录用户
+        borrowRecord.setSysUser(user);
+        borrowRecord.setBookInfo(bookInfo);
+        borrowRecord.setBorrowDays(borrowDays);
+        borrowRecord.setReturnDate(now);
+        bookInfoService.saveAndFlush(bookInfo);
+        borrowRecordRepository.saveAndFlush(borrowRecord);
     }
 
     @Override
     public Page<BorrowRecord> findAllByPage(int page, int limit) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
-    public BorrowRecord selectById(Long id) {
-        return null;
-    }
-
-    @Override
-    public void updateById(BorrowRecord borrowRecord) {
-
+        Pageable pageable = PageRequest.of(page-1,limit, Sort.by(Sort.Direction.ASC,"status"));
+        return borrowRecordRepository.findAll(pageable);
     }
 
     @Override
     public void deleteByIds(Long[] ids) {
-
+        List<BorrowRecord> records = borrowRecordRepository.findAllById(Arrays.asList(ids));
+        borrowRecordRepository.deleteInBatch(records);
     }
+
+    @Override
+    public List<BorrowRecord> findByUsername(String username) {
+        QBorrowRecord record = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = record.sysUser.username.eq(username);
+        //查询状态未还或逾期的记录
+        expression = expression.and(record.status.in(0,1));
+        return (List<BorrowRecord>) borrowRecordRepository.findAll(expression);
+    }
+
+    @Override
+    public Page<BorrowRecord> searchBorrow(int page, int limit, String bookname, String username, String status) {
+        QBorrowRecord record = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = Expressions.asBoolean(true).isTrue();
+        if(!Strings.isNullOrEmpty(bookname)){
+            expression = expression.and(record.bookInfo.bookname.eq(bookname));
+        }
+        if(!Strings.isNullOrEmpty(username)){
+            expression = expression.and(record.sysUser.username.eq(username));
+        }
+        if(!Strings.isNullOrEmpty(status)){
+            expression = expression.and(record.status.eq(Integer.parseInt(status)));
+        }
+        Pageable pageable = PageRequest.of(page-1,limit,Sort.by(Sort.Direction.ASC,"createAt"));
+        return borrowRecordRepository.findAll(expression,pageable);
+    }
+
 }
