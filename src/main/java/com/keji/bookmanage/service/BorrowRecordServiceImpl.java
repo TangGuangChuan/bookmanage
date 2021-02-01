@@ -40,7 +40,7 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
         bookInfo.setNumber(bookInfo.getNumber()-1);
         bookInfo.setBorrowNum(bookInfo.getBorrowNum()+1);
         //设置归还时间为当前时间加上借阅天数
-        LocalDateTime now = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        LocalDateTime now = LocalDateTime.now();
         now = now.plusDays(borrowDays);
         //设置借阅用户为当前登录用户
         borrowRecord.setSysUser(user);
@@ -88,5 +88,38 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
         Pageable pageable = PageRequest.of(page-1,limit,Sort.by(Sort.Direction.ASC,"createAt"));
         return borrowRecordRepository.findAll(expression,pageable);
     }
+
+    @Override
+    public Page<BorrowRecord> findAllByUser(int page, int limit, String username) {
+        QBorrowRecord record = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = record.sysUser.username.eq(username);
+        Pageable pageable = PageRequest.of(page-1,limit,Sort.by(Sort.Direction.ASC,"status"));
+        return borrowRecordRepository.findAll(expression,pageable);
+    }
+
+    @Override
+    public BorrowRecord findById(Long id) {
+        return borrowRecordRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveAndFlush(BorrowRecord record) {
+        borrowRecordRepository.saveAndFlush(record);
+    }
+
+    @Override
+    public List<BorrowRecord> findByBookId(Long id) {
+        QBorrowRecord qBorrowRecord = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = qBorrowRecord.bookInfo.id.eq(id);
+        return (List<BorrowRecord>) borrowRecordRepository.findAll(expression);
+    }
+
+    @Override
+    public List<BorrowRecord> findByBookIds(Long[] ids) {
+        QBorrowRecord qBorrowRecord = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = qBorrowRecord.bookInfo.id.in(ids);
+        return (List<BorrowRecord>) borrowRecordRepository.findAll(expression);
+    }
+
 
 }

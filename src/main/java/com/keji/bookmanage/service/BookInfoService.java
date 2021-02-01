@@ -32,4 +32,8 @@ public interface BookInfoService {
 
     @Transactional
     void deleteByIds(Long[] ids);
+
+    List<BookInfo> findByType_id(Long typeId);
+
+    List<BookInfo> findByType_ids(Long[] ids);
 }

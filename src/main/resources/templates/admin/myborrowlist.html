@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>图书借阅系统</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/layui/css/layui.css"
+          th:href="@{/admin/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/admin.css" th:href="@{/admin/css/admin.css}"/>
+</head>
+
+<body>
+<div class="page-content-wrap">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table class="layui-table" id="myborrowRecord" lay-filter="myBorrowRecordTable"></table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="toolbar">
+    {{#  if(d.status != 2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="returnBook" title="归还">归还</a>
+    {{#  } }}
+</script>
+<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
+<script>
+    layui.use(['table', 'jquery','form','layer'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        //table数据初始化
+        table.render({
+            elem: '#myborrowRecord',
+            url: '../borrow/myborrowrecord',
+            limit:5,
+            limits:[1,5,10,15,20],
+            cols: [
+                [
+                    {field: 'id', title: 'ID', sort: true, fixed: 'left'},
+                    {field: 'bookname', title: '书名',
+                        templet: function (data) {
+                            return data.bookInfo.bookname;
+                        }
+                    },
+                    {field: 'auther', title: '作者',
+                        templet: function (data) {
+                            return data.bookInfo.auther;
+                        }
+                    },
+                    {field: 'typename', title: '类型',
+                        templet: function (data) {
+                            return data.bookInfo.bookType.typeName;
+                        }
+                    },
+                    {field: 'username', title: '借阅用户',
+                        templet: function (data) {
+                            return data.sysUser.username;
+                        }
+                    },
+                    {
+                        field: 'borrowDays',title: '借阅天数'
+                    },
+                    {field: 'createAt', title: '借出时间',
+                        templet: function (data) {
+                            return data.createAt.replace('T',' ');
+                        }
+                    },
+                    {field: 'returnDate', title: '归还时间',
+                        templet: function (data) {
+                            return data.returnDate.replace('T',' ');
+                        }
+                    },
+                    {field: 'status', title: '状态',
+                        templet: function (data) {
+                            if(data.status == 0){
+                                return "<span class='layui-badge layui-bg-orange'>未还</span>";
+                            }
+                            if(data.status == 1){
+                                return "<span class='layui-badge layui-bg-red'>逾期</span>";
+                            }
+                            if(data.status == 2){
+                                return "<span class='layui-badge layui-bg-green'>已还</span>";
+                            }
+                        }
+                    },
+                    {fixed: 'right', title: '操作',toolbar: '#toolbar'}
+                ]
+            ],
+            page: true
+        });
+
+        //----------------toolbar1(内容工具条) 绑定----------------------
+        table.on('tool(myBorrowRecordTable)',function(obj){
+            console.log(obj.event);
+            if(obj.event == 'returnBook'){
+                layer.confirm("确定归还吗？",{icon:5},function (index) {
+                    var id = obj.data.id;
+                    $.ajax({
+                        url:"returnbook",
+                        dataType:"json",
+                        data:"id="+id,
+                        success:function (data) {
+                            if(data.code == 0){
+                                layer.msg("归还成功",{icon:1,time:2000});
+                                table.reload('myborrowRecord')
+                            }else {
+                                layer.msg("归还失败", {icon: 5, time: 2000});
+                            }
+                        }
+
+                    })
+                })
+
+            }
+        })
+        //----------------------------------------------
+
+    });
+</script>
+</body>
+</html>

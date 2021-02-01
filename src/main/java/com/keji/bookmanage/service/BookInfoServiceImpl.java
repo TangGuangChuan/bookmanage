@@ -6,7 +6,6 @@ import com.keji.bookmanage.entity.QBookInfo;
 import com.keji.bookmanage.repository.BookInfoRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import org.apache.commons.collections.functors.ExceptionPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.beans.Expression;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,5 +82,19 @@ public class BookInfoServiceImpl implements BookInfoService {
     public void deleteByIds(Long[] ids) {
         List<BookInfo> bookInfos = bookInfoRepository.findAllById(Arrays.asList(ids));
         bookInfoRepository.deleteInBatch(bookInfos);
+    }
+
+    @Override
+    public List<BookInfo> findByType_id(Long typeId) {
+        QBookInfo qBookInfo = QBookInfo.bookInfo;
+        BooleanExpression expression = qBookInfo.bookType.id.eq(typeId);
+        return (List<BookInfo>) bookInfoRepository.findAll(expression);
+    }
+
+    @Override
+    public List<BookInfo> findByType_ids(Long[] ids) {
+        QBookInfo qBookInfo = QBookInfo.bookInfo;
+        BooleanExpression expression = qBookInfo.bookType.id.in(ids);
+        return (List<BookInfo>) bookInfoRepository.findAll(expression);
     }
 }

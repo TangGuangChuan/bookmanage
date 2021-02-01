@@ -284,8 +284,6 @@
                                 //获取当前页数
                                 var currpage = $(".layui-laypage-em").next().html();
                                 //删除后当前页无数据刷新需要回退一页
-                                console.log(table.cache['bookinfo'].length);
-                                console.log(currpage);
                                 if (table.cache['bookinfo'].length == ids.length && currpage > 1) {
                                     table.reload('bookinfo', {
                                         page: {
@@ -296,7 +294,7 @@
                                     table.reload('bookinfo')
                                 }
                             } else {
-                                layer.msg("删除失败", {icon: 5, time: 2000});
+                                layer.msg(data.msg, {icon: 5, time: 2000});
                             }
                         }
                     })
@@ -391,6 +389,8 @@
                                 } else {
                                     table.reload('bookinfo')
                                 }
+                            }else {
+                                layer.msg(data.msg, {icon: 5, time: 2000});
                             }
                         }
 

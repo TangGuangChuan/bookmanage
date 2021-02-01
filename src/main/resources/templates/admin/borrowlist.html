@@ -57,17 +57,7 @@
 </div>
 
 <script type="text/html" id="toolbar1">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="borrow">借阅</a>
-    <shiro:hasPermission name="admin:update">
-        <a class="layui-btn layui-btn-xs" lay-event="update">编辑</a>
-    </shiro:hasPermission>
-    <shiro:hasPermission name="admin:delete">
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-    </shiro:hasPermission>
-</script>
-<script type="text/html" id="toolbar2">
     <a shiro:hasPermission="admin:delete" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteMany">批量删除</a>
-    <a class="layui-btn layui-btn-sm layui-btn-primary" lay-event="myBorrow">我的借阅</a>
 </script>
 <script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
 <script>
@@ -80,7 +70,7 @@
         table.render({
             elem: '#borrowRecord',
             url: '../borrow/info',
-            toolbar: "#toolbar2",//开启头部工具栏，并为其绑定左侧模板
+            toolbar: "#toolbar1",//开启头部工具栏，并为其绑定左侧模板
             limit:5,
             limits:[1,5,10,15,20],
             cols: [
@@ -107,6 +97,9 @@
                             return data.sysUser.username;
                         }
                     },
+                    {
+                        field: 'borrowDays',title: '借阅天数'
+                    },
                     {field: 'createAt', title: '借出时间',
                         templet: function (data) {
                             return data.createAt.replace('T',' ');
@@ -126,7 +119,7 @@
                                 return "<span class='layui-badge layui-bg-red'>逾期</span>";
                             }
                             if(data.status == 2){
-                                return "<span class='layui-badge layui-bg-green'>逾期</span>";
+                                return "<span class='layui-badge layui-bg-green'>已还</span>";
                             }
                         }
                     },
@@ -186,7 +179,7 @@
                 where:{
                     bookname: $("#bookname").val(),
                     username: $("#username").val(),
-                    type: $("#status").val()
+                    status: $("#status").val()
                 },
                 page:{
                     curr:1 //重新从第一页开始

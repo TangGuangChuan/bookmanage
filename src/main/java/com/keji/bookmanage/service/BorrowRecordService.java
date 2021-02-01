@@ -25,4 +25,15 @@ public interface BorrowRecordService {
     List<BorrowRecord> findByUsername(String username);
 
     Page<BorrowRecord> searchBorrow(int page, int limit, String bookname, String username, String status);
+
+    Page<BorrowRecord> findAllByUser(int page, int limit, String username);
+
+    BorrowRecord findById(Long id);
+
+    @Transactional
+    void saveAndFlush(BorrowRecord record);
+
+    List<BorrowRecord> findByBookId(Long id);
+
+    List<BorrowRecord> findByBookIds(Long[] ids);
 }

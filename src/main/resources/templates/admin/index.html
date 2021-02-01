@@ -21,38 +21,20 @@
 				    <dl class="layui-nav-child">
 				      <dd><a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='1' data-text="图书列表"><span class="l-line"></span>图书列表</a></dd>
 				      <dd><a href="javascript:;" th:attr="data-url=@{/borrow/list}" data-id='2' data-text="借阅记录"><span class="l-line"></span>借阅记录</a></dd>
+					  <dd><a href="javascript:;" th:attr="data-url=@{/borrow/mylist}" data-id='3' data-text="我的借阅"><span class="l-line"></span>我的借阅</a></dd>
+					  <dd><a href="javascript:;" th:attr="data-url=@{/booktype/list}" data-id='4' data-text="图书类型"><span class="l-line"></span>图书类型</a></dd>
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>内容管理</a>
+				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
 				    <dl class="layui-nav-child">
-				      <dd><a href="javascript:;" data-url="article-list.html" data-id='3' data-text="文章管理"><span class="l-line"></span>文章管理</a></dd>
-				      <dd><a href="javascript:;" data-url="danye-list.html" data-id='9' data-text="单页管理"><span class="l-line"></span>单页管理</a></dd>
+				      <dd><a href="javascript:;" data-url="danye-list.html" data-id='5' data-text="用户列表"><span class="l-line"></span>用户列表</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='6' data-text="角色列表"><span class="l-line"></span>角色列表</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='7' data-text="权限列表"><span class="l-line"></span>权限列表</a></dd>
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe604;</i>推荐位管理</a>
-				  </li>
-				   <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe60c;</i>友情链接</a>
-				  </li>
-				   <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe60a;</i>RBAC</a>
-				  </li>
-				  <li class="layui-nav-item">
-				    <a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i>邮件系统</a>
-				  </li>
-				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe60d;</i>生成静态</a>
-				  </li>
-				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理</a>
-				  </li>
-				  <li class="layui-nav-item">
-				    <a href="javascript:;" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
-				  </li>
-				  <li class="layui-nav-item">
-				  	<a href="javascript:;" th:attr="data-url=@{/book/list}" data-id='6' data-text="图书列表"><i class="iconfont">&#xe60b;</i>图书列表</a>
+				    <a href="javascript:;" th:attr="data-url=@{/user/info}" data-id='8' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
 				  </li>
 				</ul>
 			</div>
@@ -67,7 +49,7 @@
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
-					    <a href="#" style="color: black;" th:attr="data-url=@{/user/info}" data-id='5' data-text="个人信息"><span shiro:principal property="username" ></span></a>
+					    <a href="#" style="color: black;" th:attr="data-url=@{/user/info}" data-id='8' data-text="个人信息"><span shiro:principal property="username" ></span></a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}" style="color: black;">退出</a></li>
 					</ul>

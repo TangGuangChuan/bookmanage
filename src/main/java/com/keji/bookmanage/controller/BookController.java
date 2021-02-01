@@ -57,7 +57,7 @@ public class BookController {
 
     @RequestMapping(value = "/book/search",method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity bookInfo(@Param("page") int page,
+    ResponseEntity bookSearch(@Param("page") int page,
                             @Param("limit")int limit,
                             @Param("bookname")String bookname,
                             @Param("auther")String auther,
@@ -98,6 +98,10 @@ public class BookController {
     @RequestMapping(value = "/book/deletebyid",method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity deleteById(@Param("id")Long id){
+        List<BorrowRecord> records = borrowRecordService.findByBookId(id);
+        if(records.size() > 0){
+            return ResponseUtil.error("须先删除对应的借阅记录再删除书籍信息");
+        }
         bookInfoService.deleteById(id);
         return ResponseUtil.success();
     }
@@ -107,6 +111,10 @@ public class BookController {
     @RequestMapping(value = "/book/deletebyids",method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity deleteByIds(@Param("ids")Long[] ids){
+        List<BorrowRecord> records = borrowRecordService.findByBookIds(ids);
+        if(records.size() > 0){
+            return ResponseUtil.error("须先删除对应的借阅记录再删除书籍信息");
+        }
         bookInfoService.deleteByIds(ids);
         return ResponseUtil.success();
     }
