@@ -1,8 +1,12 @@
 package com.keji.bookmanage.service;
 
 import com.keji.bookmanage.entity.SysRole;
+import com.keji.bookmanage.entity.SysUser;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @auther tangguangchuan
@@ -13,4 +17,14 @@ public interface SysRoleService {
 
     @Transactional
     SysRole save(SysRole sysRole);
+
+    List<SysRole> findAll();
+
+    List<SysRole> findByRoles(String[] roles);
+
+    Page<SysRole> findAll(int page, int limit);
+
+    Page<SysRole> findAll(int page, int limit, String rolename, String role, String enable);
+
+    SysRole findById(long id);
 }

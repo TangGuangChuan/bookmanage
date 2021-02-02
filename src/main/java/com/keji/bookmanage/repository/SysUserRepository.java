@@ -3,6 +3,7 @@ package com.keji.bookmanage.repository;
 import com.keji.bookmanage.entity.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @date 2021/1/12 下午2:47
  */
 @Repository
-public interface SysUserRepository extends JpaRepository<SysUser,Long> {
+public interface SysUserRepository extends JpaRepository<SysUser,Long>, QuerydslPredicateExecutor<SysUser> {
     @Query("select u from SysUser u where u.username = :username or u.email = :username")
     SysUser findByUsernameOrEmail(@Param("username") String username);
 

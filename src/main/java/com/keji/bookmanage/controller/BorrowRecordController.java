@@ -51,6 +51,7 @@ public class BorrowRecordController {
         return ResponseUtil.success(records.getContent(),records.getTotalElements());
     }
 
+    @RequiresRoles("user")
     @RequestMapping(value = "/borrow/myborrowrecord",method = RequestMethod.GET)
     public @ResponseBody ResponseEntity myBorrowRecord(@Param("page") int page,
                                                        @Param("limit")int limit){
@@ -59,6 +60,7 @@ public class BorrowRecordController {
         return ResponseUtil.success(records.getContent(),records.getTotalElements());
     }
 
+    @RequiresRoles("user")
     @RequestMapping(value = "/borrow/search",method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity bookInfo(@Param("page") int page,
@@ -79,10 +81,12 @@ public class BorrowRecordController {
         return ResponseUtil.success();
     }
 
+    @RequiresRoles("user")
     @RequestMapping(value = "/borrow/returnbook",method = RequestMethod.GET)
     public @ResponseBody ResponseEntity returnBook(@Param("id") Long id){
         BorrowRecord record = borrowRecordService.findById(id);
         LocalDateTime returnDate = LocalDateTime.now();
+        //设置状态为已还
         record.setStatus(2);
         record.setReturnDate(returnDate);
         borrowRecordService.saveAndFlush(record);

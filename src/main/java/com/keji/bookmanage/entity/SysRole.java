@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class SysRole extends BaseEntity {
     private String role;
+    private String roleName;
     //角色描述
     private String description;
     //是否可用，不可用将不会添加给用户

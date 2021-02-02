@@ -1,6 +1,7 @@
 package com.keji.bookmanage.service;
 
 import com.keji.bookmanage.entity.SysUser;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -21,4 +22,8 @@ public interface SysUserService {
     SysUser findByUsername(String username);
 
     SysUser findByEmail(String email);
+
+    Page<SysUser> findAll(int page, int limit);
+
+    Page<SysUser> findAll(int page, int limit, String username, String email, String locked);
 }

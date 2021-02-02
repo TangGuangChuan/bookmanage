@@ -1,5 +1,6 @@
 package com.keji.bookmanage.repository;
 
+import com.keji.bookmanage.entity.SysPermission;
 import com.keji.bookmanage.entity.SysRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -10,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * @date 2021/1/18 下午1:40
  */
 @Repository
-public interface SysRoleRepository extends JpaRepository<SysRole,Long> , QuerydslPredicateExecutor<SysRole> {
-    SysRole findByRole(String role);
+public interface SysPermissionRepository extends JpaRepository<SysPermission,Long> , QuerydslPredicateExecutor<SysPermission> {
+
 }

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>图书借阅系统</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/layui/css/layui.css"
+          th:href="@{/admin/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/admin.css" th:href="@{/admin/css/admin.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/formSelects-v4.css" th:href="@{/admin/css/formSelects-v4.css}"/>
+</head>
+
+<body>
+<div class="page-content-wrap">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">权限名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" id="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">权限标识</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="permission" id="permission"  placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否禁用</label>
+                    <div class="layui-input-block">
+                        <select name="enable" id="enable">
+                            <option value="">请选择状态</option>
+                            <option value="true">是</option>
+                            <option value="false">否</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" id="search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table class="layui-table" id="rolelist" lay-filter="rolelistTable"></table>
+        </div>
+    </div>
+</div>
+<!---------------------添加表格 start------------------------------->
+<form class="layui-form" id="addRole" style="display: none;padding: 20px 30px 0 0" lay-filter="insertFilter">
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="rolename" placeholder="请输入角色名"  lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色标识</label>
+        <div class="layui-input-inline">
+            <input type="text" name="role" placeholder="输入角色标识" lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分配权限</label>
+        <div class="layui-input-inline">
+            <select name="permissions" xm-select="permissions" lay-verify="required">
+                <option value="">请添加权限</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!---------------------添加表格 end------------------------------->
+
+<!---------------------修改表格 start------------------------------->
+<form class="layui-form" id="updateRole" style="display: none;padding: 20px 30px 0 0" lay-filter="updateFilter">
+    <div class="layui-form-item" hidden>
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-inline">
+            <input type="text" name="id" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="rolename" placeholder="请输入角色名"  lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色标识</label>
+        <div class="layui-input-inline">
+            <input type="text" name="role" placeholder="输入角色标识" lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否禁用</label>
+        <div class="layui-input-inline">
+            <input type="checkbox" name="enable" id="updateEnable" lay-skin="switch" lay-text="是|否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分配权限</label>
+        <div class="layui-input-inline">
+            <select name="permissions" xm-select="updatePermissions" lay-verify="required">
+                <option value="">请选择权限</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="updateSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!---------------------修改表格 end------------------------------->
+
+<script type="text/html" id="toolbar1">
+    <a shiro:hasPermission="admin:creat" class="layui-btn layui-btn-sm" lay-event="add">添加</a>
+</script>
+<script type="text/html" id="toolbar2">
+    <a shiro:hasPermission="admin:update" class="layui-btn layui-btn-sm" lay-event="update">编辑</a>
+</script>
+<script src="../static/admin/layui/layui.js" type="text/javascript" th:src="@{/admin/layui/layui.js}"></script>
+<script src="../static/admin/js/module/formSelects-v4.js" type="text/javascript" th:src="@{/admin/js/module/formSelects-v4.js}"></script>
+<script>
+    layui.config({
+        base: '../bookmanage/admin/js/module/'
+    }).extend({
+        formSelects: 'formSelects-v4',
+    });
+
+    layui.use(['table', 'jquery','form','layer','formSelects'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var formSelects = layui.formSelects;
+        //查询并给角色下拉框赋值
+        $.ajax({
+            url: '../permission/getpermissions',
+            dataType: 'json',
+            type: 'get',
+            success: function (data) {
+                var permissions = [];
+                $.each(data.data,function (index,value) {
+                    permissions.push({name:value.name,value:value.permission});
+                })
+                formSelects.data('permission','local',{arr:permissions});
+                formSelects.data('updatePermissions','local',{arr:permissions});
+            }
+        });
+        //table数据初始化
+        table.render({
+            elem: '#rolelist',
+            url: '../role/info',
+            toolbar: "#toolbar1",
+            limit:5,
+            limits:[1,5,10,15,20],
+            cols: [
+                [
+                    {field: 'id', title: 'ID', sort: true, fixed: 'left'},
+                    {field: 'roleName', title: '角色名'},
+                    {field: 'role', title: '角色标识'},
+                    {field: 'enable', title: '是否禁用',
+                        templet:function (data) {
+                            if(data.enable){
+                                return "<span class='layui-badge layui-bg-gray'>是</span>";
+                            }else{
+                                return  "<span class='layui-badge layui-bg-green'>否</span>";
+                            }
+                        }
+                    },
+                    {field: 'createAt', title: '创建时间',
+                        templet: function (data) {
+                            return data.createAt.replace('T',' ');
+                        }
+                    },
+                    {field: 'permissions', title: '拥有权限',
+                        templet:function (data) {
+                            var permissions = [];
+                            $.each(data.permissions,function(index,item){
+                                permissions.push(item.permissions);
+                            })
+                            return permissions.toString();
+                        }
+                    },
+                    {fixed: 'right', title: '操作', toolbar: '#toolbar2'}
+                ]
+            ],
+            page: true
+        });
+
+        //----------------toolbar1（表头工具条） 绑定----------------------
+        table.on('toolbar(rolelistTable)', function (obj) {
+            //获取到table表格的id
+            var checkStatus = table.checkStatus(obj.config.id);
+            if (obj.event == 'add') {
+                layer.open({
+                    type: 1,
+                    content: $("#addRole"),
+                    area: ["500px", "500px"],
+                    title: '添加角色'
+                })
+            }
+        });
+        //----------------------------------------------
+
+        //---------------search start------------------
+        $("#searchRole").click(function () {
+            table.reload('rolelist',{
+                url: 'search',
+                where:{
+                    rolename: $("#rolename").val(),
+                    role: $("#role").val(),
+                    enable: $("#enable").val()
+                },
+                page:{
+                    curr:1 //重新从第一页开始
+                }
+            })
+        })
+        //----------------search end--------------------
+
+        //----------------toolbar2(内容工具条) 绑定----------------------
+        table.on('tool(rolelistTable)',function (obj) {
+            if(obj.event =='update'){
+                $.ajax({
+                    url:"selectbyid",
+                    data:"id="+obj.data.id,
+                    dataType:"json",
+                    success:function (data) {
+                        //val中填写form表单lay-Filter的值
+                        form.val('updateFilter',{
+                            id:data.data.id,
+                            rolename:data.data.roleName,
+                            enable:data.data.enable,
+                        })
+                        if(data.data.enable){
+                            $("#updateEnable").prop("checked",true);
+                        }else {
+                            $("#updateEnable").prop("checked",false);
+                        }
+                        //获取对象列表的某个属性生成数组
+                        var permissions = data.data.permissions.map(function(item) {
+                            return item.permission;
+                        });
+                        // 选中value为roles中的option
+                        formSelects.value('updatePermissions', permissions);
+                    }
+                })
+                layer.open({
+                    type:1,
+                    content:$("#updateRole"),
+                    area:["500px","500px"],
+                    title:'修改'
+                })
+            }
+        })
+        //----------------------------------------------
+
+        //-------------------添加按钮绑定事件 start---------------------------
+        form.on('submit(addSubmit)',function () {
+            $.ajax({
+                type:"post",
+                url:"add",
+                data:$("#addRole").serialize(),
+                success:function (data) {
+                    if(data.code == 0){
+                        $("#addRole")[0].reset();
+                        layer.confirm("添加成功,要退出添加界面吗？",{icon: 1},function (index) {
+                            layer.closeAll();
+                        })
+                        table.reload('rolelist')
+                    }else {
+                        layer.msg(data.msg,{icon:5,time:3000});
+                    }
+                },
+                dateType:"json"
+            });
+            return false;
+        });
+        //-------------------添加按钮绑定事件 end---------------------------
+
+        //-------------------修改按钮绑定事件 start-------------------------
+        form.on('submit(updateSubmit)',function () {
+            $.ajax({
+                type:"post",
+                url:"update",
+                data:$("#updateRole").serialize(),
+                success:function (data) {
+                    if(data.code == 0){
+                        layer.confirm("修改成功,要退出修改界面吗？",{icon: 1},function (index) {
+                            layer.closeAll();
+                        })
+                        table.reload('rolelist')
+                    }else {
+                        layer.msg(data.msg,{icon:5,time:3000});
+                    }
+                },
+                dateType:"json"
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

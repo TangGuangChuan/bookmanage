@@ -28,9 +28,9 @@
 				  <li class="layui-nav-item">
 				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
 				    <dl class="layui-nav-child">
-				      <dd><a href="javascript:;" data-url="danye-list.html" data-id='5' data-text="用户列表"><span class="l-line"></span>用户列表</a></dd>
-					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='6' data-text="角色列表"><span class="l-line"></span>角色列表</a></dd>
-					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='7' data-text="权限列表"><span class="l-line"></span>权限列表</a></dd>
+				      <dd><a href="javascript:;" th:attr="data-url=@{/user/list}" data-id='5' data-text="用户列表"><span class="l-line"></span>用户列表</a></dd>
+					  <dd><a href="javascript:;" th:attr="data-url=@{/role/list}" data-id='6' data-text="角色列表"><span class="l-line"></span>角色列表</a></dd>
+					  <dd><a href="javascript:;" th:attr="data-url=@{/permission/list}" data-id='7' data-text="权限列表"><span class="l-line"></span>权限列表</a></dd>
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">

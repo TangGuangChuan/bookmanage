@@ -17,11 +17,6 @@ import java.util.List;
 public class SysPermission extends BaseEntity {
     //权限名称
     private String name;
-    //类型
-    @Column(columnDefinition = "enum('menu','button')")
-    private String type;
-    //路径
-    private String url;
     //权限字符串menu例子：role:*,button例子：role:create,role:update
     private String permission;
     private Boolean enable = Boolean.FALSE;
