@@ -42,7 +42,7 @@ public class SendEmailSchedule {
         }
         log.info("开始执行定时任务");
         //查询逾期的借阅记录并发邮件提示归还
-        LocalDateTime now = LocalDateTime.now().plusDays(7);
+        LocalDateTime now = LocalDateTime.now();
         List<BorrowRecord> overRecords = borrowRecordService.findByReturnDateAndStatus(now);
         if (overRecords.size() > 0) {
             //定义set存储邮箱信息,同一用户可能有多笔逾期记录,只发送一次邮件提醒
