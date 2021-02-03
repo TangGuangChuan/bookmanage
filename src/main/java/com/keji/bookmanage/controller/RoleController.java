@@ -68,7 +68,7 @@ public class RoleController {
         SysRole sysRole = null;
         sysRole = sysRoleService.findByRole(role);
         if(sysRole != null){
-            return ResponseUtil.error("该权限标识已存在");
+            return ResponseUtil.error("该角色标识已存在");
         }
         SysRole newRole = new SysRole();
         newRole.setRoleName(rolename);
@@ -97,7 +97,7 @@ public class RoleController {
         SysRole sysRole = null;
         sysRole = sysRoleService.findByRole(role);
         if(sysRole != null && sysRole.getId() != id){
-            return ResponseUtil.error("该权限标识已存在");
+            return ResponseUtil.error("该角色标识已存在");
         }
         sysRole = sysRoleService.findById(id);
         sysRole.setRole(role);

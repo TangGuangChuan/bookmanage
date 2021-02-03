@@ -5,6 +5,11 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    host: smtp.163.com
+    username: 18725969870@163.com
+    password: loving19960214
+    default-encoding: UTF-8
 
   jpa:
     database: mysql
@@ -26,9 +31,10 @@ spring:
 #定时任务配置
 schedule:
   enable: true
-  cron: 0 0/1 * * * ?
+  cron: 0 0/3 * * * ?
 
 server:
   port: 8080
   servlet:
     context-path: /bookmanage
+

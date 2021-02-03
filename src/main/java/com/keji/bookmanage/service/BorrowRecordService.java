@@ -6,6 +6,7 @@ import com.keji.bookmanage.entity.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,4 +37,9 @@ public interface BorrowRecordService {
     List<BorrowRecord> findByBookId(Long id);
 
     List<BorrowRecord> findByBookIds(Long[] ids);
+
+    List<BorrowRecord> findByReturnDateAndStatus(LocalDateTime endTime);
+
+    @Transactional
+    void saveAll(List<BorrowRecord> overRecords);
 }

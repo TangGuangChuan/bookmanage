@@ -39,7 +39,7 @@ public class SysUserController {
         return "admin/welcome";
     }
 
-    @RequestMapping("/user/info")
+    @RequestMapping("/user/myinfo")
     public String userInfo(ModelMap modelMap){
         SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         modelMap.put("sysUser",sysUser);

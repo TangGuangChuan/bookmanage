@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysPermissionRepository extends JpaRepository<SysPermission,Long> , QuerydslPredicateExecutor<SysPermission> {
 
+    SysPermission findByPermission(String permission);
 }

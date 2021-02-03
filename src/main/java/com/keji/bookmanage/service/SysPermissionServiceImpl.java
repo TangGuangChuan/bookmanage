@@ -1,5 +1,6 @@
 package com.keji.bookmanage.service;
 
+import com.google.common.base.Strings;
 import com.keji.bookmanage.entity.QSysPermission;
 import com.keji.bookmanage.entity.SysPermission;
 import com.keji.bookmanage.repository.SysPermissionRepository;
@@ -38,5 +39,37 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     public Page<SysPermission> findAll(int page, int limit) {
         Pageable pageable = PageRequest.of(page-1,limit);
         return sysPermissionRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<SysPermission> findAll(int page, int limit, String name, String permission, String enable) {
+        QSysPermission qSysPermission = QSysPermission.sysPermission;
+        BooleanExpression expression = Expressions.asBoolean(true).isTrue();
+        if(!Strings.isNullOrEmpty(name)){
+            expression = expression.and(qSysPermission.name.eq(name));
+        }
+        if(!Strings.isNullOrEmpty(permission)){
+            expression = expression.and(qSysPermission.permission.eq(permission));
+        }
+        if(!Strings.isNullOrEmpty(enable)){
+            expression = expression.and(qSysPermission.enable.eq(Boolean.valueOf(enable)));
+        }
+        Pageable pageable =PageRequest.of(page-1,limit);
+        return sysPermissionRepository.findAll(expression,pageable);
+    }
+
+    @Override
+    public SysPermission findByPermission(String permission) {
+        return sysPermissionRepository.findByPermission(permission);
+    }
+
+    @Override
+    public void save(SysPermission newPermission) {
+        sysPermissionRepository.saveAndFlush(newPermission);
+    }
+
+    @Override
+    public SysPermission findById(long id) {
+        return sysPermissionRepository.findById(id).get();
     }
 }

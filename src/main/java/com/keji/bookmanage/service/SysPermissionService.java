@@ -18,4 +18,12 @@ public interface SysPermissionService {
     List<SysPermission> findAll();
 
     Page<SysPermission> findAll(int page, int limit);
+
+    Page<SysPermission> findAll(int page, int limit, String name, String permission, String enable);
+
+    SysPermission findByPermission(String permission);
+
+    void save(SysPermission newPermission);
+
+    SysPermission findById(long id);
 }

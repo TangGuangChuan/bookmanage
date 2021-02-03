@@ -34,7 +34,7 @@
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
-				    <a href="javascript:;" th:attr="data-url=@{/user/info}" data-id='8' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
+				    <a href="javascript:;" th:attr="data-url=@{/user/myinfo}" data-id='8' data-text="个人信息" ><i class="iconfont">&#xe606;</i>个人信息</a>
 				  </li>
 				</ul>
 			</div>
@@ -49,7 +49,7 @@
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
-					    <a href="#" style="color: black;" th:attr="data-url=@{/user/info}" data-id='8' data-text="个人信息"><span shiro:principal property="username" ></span></a>
+					    <a href="#" style="color: black;" th:attr="data-url=@{/user/myinfo}" data-id='8' data-text="个人信息"><span shiro:principal property="username" ></span></a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" th:href="@{/logout}" style="color: black;">退出</a></li>
 					</ul>

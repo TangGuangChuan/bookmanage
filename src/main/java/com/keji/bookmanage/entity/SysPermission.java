@@ -19,7 +19,7 @@ public class SysPermission extends BaseEntity {
     private String name;
     //权限字符串menu例子：role:*,button例子：role:create,role:update
     private String permission;
-    private Boolean enable = Boolean.FALSE;
+    private Boolean enable;
     //角色-权限关系
     /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

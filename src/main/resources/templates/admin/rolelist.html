@@ -162,7 +162,7 @@
                 $.each(data.data,function (index,value) {
                     permissions.push({name:value.name,value:value.permission});
                 })
-                formSelects.data('permission','local',{arr:permissions});
+                formSelects.data('permissions','local',{arr:permissions});
                 formSelects.data('updatePermissions','local',{arr:permissions});
             }
         });
@@ -196,7 +196,7 @@
                         templet:function (data) {
                             var permissions = [];
                             $.each(data.permissions,function(index,item){
-                                permissions.push(item.permissions);
+                                permissions.push(item.permission);
                             })
                             return permissions.toString();
                         }
@@ -209,8 +209,6 @@
 
         //----------------toolbar1（表头工具条） 绑定----------------------
         table.on('toolbar(rolelistTable)', function (obj) {
-            //获取到table表格的id
-            var checkStatus = table.checkStatus(obj.config.id);
             if (obj.event == 'add') {
                 layer.open({
                     type: 1,
@@ -250,6 +248,7 @@
                         form.val('updateFilter',{
                             id:data.data.id,
                             rolename:data.data.roleName,
+                            role:data.data.role,
                             enable:data.data.enable,
                         })
                         if(data.data.enable){
@@ -287,7 +286,7 @@
                         layer.confirm("添加成功,要退出添加界面吗？",{icon: 1},function (index) {
                             layer.closeAll();
                         })
-                        table.reload('rolelist')
+                        table.reload('rolelist');
                     }else {
                         layer.msg(data.msg,{icon:5,time:3000});
                     }
@@ -309,7 +308,7 @@
                         layer.confirm("修改成功,要退出修改界面吗？",{icon: 1},function (index) {
                             layer.closeAll();
                         })
-                        table.reload('rolelist')
+                        table.reload('rolelist');
                     }else {
                         layer.msg(data.msg,{icon:5,time:3000});
                     }

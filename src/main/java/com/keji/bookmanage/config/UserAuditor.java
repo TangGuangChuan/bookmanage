@@ -2,6 +2,7 @@ package com.keji.bookmanage.config;
 
 import com.keji.bookmanage.entity.SysUser;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
 import org.springframework.data.domain.AuditorAware;
 
 import java.util.Optional;
@@ -18,12 +19,19 @@ public class UserAuditor implements AuditorAware<String> {
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        Object obj = SecurityUtils.getSubject().getPrincipal();
-        if(obj == null){
+        try{
+            Object obj = SecurityUtils.getSubject().getPrincipal();
+            if(obj == null){
+                return null;
+            }
+            SysUser user = (SysUser) obj;
+            return Optional.ofNullable(user.getUsername());
+        }catch (UnavailableSecurityManagerException e){
+            /**
+             * 定时任务里调用SecurityUtils.getSubject()会报UnavailableSecurityManagerException异常
+             * 调用SecurityUtils.getSubject()必须为有效的http连接,或者tcp连接,而在定时任务里,不是http连接,也不是tcp连接
+             */
             return null;
         }
-        SysUser user = (SysUser) obj;
-        return Optional.ofNullable(user.getUsername());
     }
-
 }
