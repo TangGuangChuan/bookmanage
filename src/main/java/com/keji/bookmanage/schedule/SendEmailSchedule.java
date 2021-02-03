@@ -42,7 +42,7 @@ public class SendEmailSchedule {
         }
         log.info("开始执行定时任务");
         //查询逾期的借阅记录并发邮件提示归还
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().plusDays(7);
         List<BorrowRecord> overRecords = borrowRecordService.findByReturnDateAndStatus(now);
         if (overRecords.size() > 0) {
             //定义set存储邮箱信息,同一用户可能有多笔逾期记录,只发送一次邮件提醒
@@ -54,18 +54,6 @@ public class SendEmailSchedule {
                 set.add(overRecords.get(i).getSysUser().getEmail());
             }
             borrowRecordService.saveAll(overRecords);
-            //群发邮件通知
-            sendEmailService.sendSimpleMail(set.toArray(new String[set.size()]),msg);
-        }
-        //查询还有1天到期的未还的借阅记录,发邮件提示用户归还
-        LocalDateTime endTime = now.plusDays(6);
-        List<BorrowRecord> records = borrowRecordService.findByReturnDateAndStatus(endTime);
-        if (records.size() > 0) {
-            Set<String> set = new HashSet<>();
-            String msg = "尊敬的用户,您好!您借阅的图书即将到期,请及时归还!(借阅详情请登录图书借阅系统查看)";
-            for (BorrowRecord borrowRecord : records) {
-                set.add(borrowRecord.getSysUser().getEmail());
-            }
             //群发邮件通知
             sendEmailService.sendSimpleMail(set.toArray(new String[set.size()]),msg);
         }
