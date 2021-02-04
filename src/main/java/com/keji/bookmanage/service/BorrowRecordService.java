@@ -42,4 +42,8 @@ public interface BorrowRecordService {
 
     @Transactional
     void saveAll(List<BorrowRecord> overRecords);
+
+    List<BorrowRecord> findByCreateAt(LocalDateTime start, LocalDateTime end);
+
+    List<BorrowRecord> findAll();
 }

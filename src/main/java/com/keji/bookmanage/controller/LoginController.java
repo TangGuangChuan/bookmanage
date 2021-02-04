@@ -1,5 +1,11 @@
 package com.keji.bookmanage.controller;
 
+import com.keji.bookmanage.entity.BookInfo;
+import com.keji.bookmanage.entity.BorrowRecord;
+import com.keji.bookmanage.entity.SysUser;
+import com.keji.bookmanage.service.BookInfoService;
+import com.keji.bookmanage.service.BookTypeSevice;
+import com.keji.bookmanage.service.BorrowRecordService;
 import com.keji.bookmanage.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -15,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @auther tangguangchuan
  * @date 2021/1/12 下午3:56
@@ -24,6 +32,10 @@ public class LoginController {
 
     @Autowired
     SysUserService sysUserService;
+    @Autowired
+    BookInfoService bookInfoService;
+    @Autowired
+    BorrowRecordService borrowRecordService;
 
     //退出的时候是get请求，主要是用于退出
     @RequestMapping(value = "/login",method = RequestMethod.GET)
@@ -59,7 +71,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
-    public String index(){
+    public String index(ModelMap modelMap){
         return "admin/index";
     }
 
@@ -70,12 +82,9 @@ public class LoginController {
         return "error ok!";
     }
 
-    //注解的使用
-    @RequiresRoles("admin")
-    @RequiresPermissions("user:list")
-    @RequestMapping(value = "/create")
-    @ResponseBody
+
+    @RequestMapping(value = "/404")
     public String create(){
-        return "Create success!";
+        return "404";
     }
 }

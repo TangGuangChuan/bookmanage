@@ -4,7 +4,7 @@ spring:
     url: jdbc:mysql://localhost:3306/bookmanage?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     host: smtp.163.com
     username: 18725969870@163.com
@@ -13,7 +13,7 @@ spring:
 
   jpa:
     database: mysql
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
       naming:
@@ -31,10 +31,12 @@ spring:
 #定时任务配置
 schedule:
   enable: true
-  cron: 0 0 0 0/1 * ?
+  cron: 0 0 1 * * ?
 
 server:
   port: 8080
   servlet:
     context-path: /bookmanage
-
+logging:
+  file:
+    name: bookmanage.log

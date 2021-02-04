@@ -43,14 +43,15 @@ public class ShiroConfig {
         filterChainMap.put("/logout","logout");
         //放行注册请求
         filterChainMap.put("/register","anon");
-        //所有都需要认证,具体认证需配置具体路径
-        filterChainMap.put("/**","authc");
         //配置登录页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         //配置认证成功跳转页面
         shiroFilterFactoryBean.setSuccessUrl("/index");
         //配置未授权页面
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/404");
+        //所有都需要认证,具体认证需配置具体路径
+        filterChainMap.put("/**","authc");
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainMap);
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("authc",new LoginFormAuthenticationFilter());

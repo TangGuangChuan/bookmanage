@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,6 +96,13 @@ public class BookInfoServiceImpl implements BookInfoService {
     public List<BookInfo> findByType_ids(Long[] ids) {
         QBookInfo qBookInfo = QBookInfo.bookInfo;
         BooleanExpression expression = qBookInfo.bookType.id.in(ids);
+        return (List<BookInfo>) bookInfoRepository.findAll(expression);
+    }
+
+    @Override
+    public List<BookInfo> findByCreateAt(LocalDateTime start, LocalDateTime end) {
+        QBookInfo qBookInfo = QBookInfo.bookInfo;
+        BooleanExpression expression = qBookInfo.createAt.between(start,end);
         return (List<BookInfo>) bookInfoRepository.findAll(expression);
     }
 }

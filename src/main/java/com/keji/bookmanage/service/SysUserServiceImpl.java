@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,5 +71,17 @@ public class SysUserServiceImpl implements SysUserService {
         }
         Pageable pageable = PageRequest.of(page-1,limit);
         return sysUserRepository.findAll(expression,pageable);
+    }
+
+    @Override
+    public List<SysUser> findByCreateAt(LocalDateTime start, LocalDateTime end) {
+        QSysUser qSysUser = QSysUser.sysUser;
+        BooleanExpression expression = qSysUser.createAt.between(start,end);
+        return (List<SysUser>) sysUserRepository.findAll(expression);
+    }
+
+    @Override
+    public List<SysUser> findAll() {
+        return sysUserRepository.findAll();
     }
 }

@@ -134,5 +134,17 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
         borrowRecordRepository.saveAll(overRecords);
     }
 
+    @Override
+    public List<BorrowRecord> findByCreateAt(LocalDateTime start, LocalDateTime end) {
+        QBorrowRecord qBorrowRecord = QBorrowRecord.borrowRecord;
+        BooleanExpression expression = qBorrowRecord.createAt.between(start,end);
+        return (List<BorrowRecord>) borrowRecordRepository.findAll(expression);
+    }
+
+    @Override
+    public List<BorrowRecord> findAll() {
+        return borrowRecordRepository.findAll();
+    }
+
 
 }

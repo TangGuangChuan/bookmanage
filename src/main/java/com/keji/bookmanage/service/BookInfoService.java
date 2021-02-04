@@ -4,6 +4,7 @@ import com.keji.bookmanage.entity.BookInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,4 +37,6 @@ public interface BookInfoService {
     List<BookInfo> findByType_id(Long typeId);
 
     List<BookInfo> findByType_ids(Long[] ids);
+
+    List<BookInfo> findByCreateAt(LocalDateTime start, LocalDateTime end);
 }
