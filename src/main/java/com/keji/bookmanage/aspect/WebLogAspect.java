@@ -3,7 +3,6 @@ package com.keji.bookmanage.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -12,11 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * @auther tangguangchuan
- * @date 2021/2/4 下午2:15
+ * @date 2021/2/4 下午5:03
  */
 @Aspect
 @Component
