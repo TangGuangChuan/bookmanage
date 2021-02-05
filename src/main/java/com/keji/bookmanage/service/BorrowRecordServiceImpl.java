@@ -68,7 +68,7 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
         QBorrowRecord record = QBorrowRecord.borrowRecord;
         BooleanExpression expression = record.sysUser.username.eq(username);
         //查询状态未还或逾期的记录
-        expression = expression.and(record.status.in(0,1));
+        expression = expression.and(record.status.eq(0));
         return (List<BorrowRecord>) borrowRecordRepository.findAll(expression);
     }
 
