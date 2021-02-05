@@ -10,6 +10,9 @@ spring:
     username: 18725969870@163.com
     password: loving19960214
     default-encoding: UTF-8
+  devtools:
+    restart:
+      enabled: true
 
   jpa:
     database: mysql
@@ -37,6 +40,3 @@ server:
   port: 8080
   servlet:
     context-path: /bookmanage
-logging:
-  file:
-    name: bookmanage.log

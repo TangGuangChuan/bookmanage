@@ -75,14 +75,6 @@ public class LoginController {
         return "admin/index";
     }
 
-    //错误页面展示
-    @RequestMapping(value = "/error",method = RequestMethod.POST)
-    @ResponseBody
-    public String error(){
-        return "error ok!";
-    }
-
-
     @RequestMapping(value = "/404")
     public String create(){
         return "404";

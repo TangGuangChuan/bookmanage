@@ -38,7 +38,7 @@ public class ShiroConfig {
         Map<String,String>  filterChainMap = new LinkedHashMap<String,String>();
         //配置不会被拦截的链接,从上至下顺序执行
         //配置静态目录允许访问,springboot默认是static目录,因此直接配置static下面的路径
-        filterChainMap.put("/admin/**","anon");
+         filterChainMap.put("/admin/**","anon");
         //配置退出
         filterChainMap.put("/logout","logout");
         //放行注册请求
@@ -48,7 +48,7 @@ public class ShiroConfig {
         //配置认证成功跳转页面
         shiroFilterFactoryBean.setSuccessUrl("/index");
         //配置未授权页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/404");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorize");
         //所有都需要认证,具体认证需配置具体路径
         filterChainMap.put("/**","authc");
 
