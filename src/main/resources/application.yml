@@ -40,3 +40,9 @@ server:
   port: 8080
   servlet:
     context-path: /bookmanage
+#logging:
+#  file:
+#    name: bookmanage.logs
+#图书封面上传地址,打包部署需改为线上服务器地址
+uploadFile:
+  dir: /home/tgc/IdeaProjects/bookmanage/src/main/resources/static/admin/bookimgs/

@@ -23,4 +23,6 @@ public class BookInfo extends BaseEntity {
     private BookType bookType;
     //借阅次数
     private int borrowNum;
+    //图书封面
+    private String bookImg;
 }

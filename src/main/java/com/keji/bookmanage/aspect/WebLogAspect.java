@@ -1,5 +1,6 @@
 package com.keji.bookmanage.aspect;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -44,7 +45,7 @@ public class WebLogAspect {
 
     @AfterReturning(value = "webLog()",returning = "returnOb")
     public void doAfterReturning(JoinPoint joinPoint,Object returnOb){
-        log.info("return:"+returnOb);
+        log.info("return:"+JSON.toJSONString(returnOb));
     }
 
     @AfterThrowing(value = "webLog()",throwing = "e")

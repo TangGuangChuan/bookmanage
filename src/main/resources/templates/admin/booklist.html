@@ -54,7 +54,13 @@
     </div>
 </div>
 <!---------------------添加图书表格 start------------------------------->
-<form class="layui-form" id="addBook" style="display: none;padding: 20px 30px 0 0" lay-filter="insertFilter">
+<form class="layui-form" id="addBook" style="display: none;padding: 20px 30px 0 0" lay-filter="insertFilter" enctype="multipart/form-data">
+    <div class="layui-form-item">
+        <label class="layui-form-label">图书封面</label>
+        <div class="layui-input-inline">
+            <input type="file" accept="image/png,image/jpg" name="bookImg" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">书名</label>
         <div class="layui-input-inline">
@@ -234,6 +240,12 @@
                 [
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'id', title: 'ID', sort: true, fixed: 'left'},
+                    {field: 'bookImg', title: '封面',
+                        templet: function (data) {
+                            var src = window.location.origin+'/bookmanage/bookimgs/'+data.bookImg;
+                            return "<img src='"+src+"' alt='暂无图片'>";
+                        }
+                    },
                     {field: 'bookname', title: '书名'},
                     {field: 'auther', title: '作者'},
                     {field: 'typename', title: '类型',
@@ -307,7 +319,9 @@
 			$.ajax({
 				type:"post",
 				url:"add",
-				data:$("#addBook").serialize(),
+                processData : false,  //必须false才会避开jQuery对formdata的默认处理
+                contentType : false,  //必须false才会自动加上正确的Content-Type
+				data: new FormData($("#addBook")[0]),
 				success:function (data) {
 					if(data.code == 0){
 						/*layer.msg("图书添加成功", {icon: 1,time:3000});*/

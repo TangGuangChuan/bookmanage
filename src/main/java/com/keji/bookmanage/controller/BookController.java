@@ -9,12 +9,14 @@ import com.keji.bookmanage.service.BookInfoService;
 import com.keji.bookmanage.service.BookTypeSevice;
 import com.keji.bookmanage.service.BorrowRecordService;
 import com.keji.bookmanage.service.SysUserService;
+import com.keji.bookmanage.util.FileUtil;
 import com.keji.bookmanage.util.ResponseEntity;
 import com.keji.bookmanage.util.ResponseUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -23,9 +25,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.Subject;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -41,6 +47,8 @@ public class BookController {
     BookTypeSevice bookTypeSevice;
     @Autowired
     BorrowRecordService borrowRecordService;
+    @Value("${uploadFile.dir}")
+    private String filePath;
 
     @RequestMapping(value = "/book/list",method = RequestMethod.GET)
     public String bookList(){
@@ -81,7 +89,8 @@ public class BookController {
                            @Param("auther")String auther,
                            @Param("type")String type,
                            @Param("introduce")String introduce,
-                           @Param("number")int number){
+                           @Param("number")int number,
+                           @Param("bookImg")MultipartFile bookImg){
         BookType bookType = bookTypeSevice.findByTypeCode(type);
         BookInfo bookInfo = new BookInfo();
         bookInfo.setBookname(bookname);
@@ -89,6 +98,18 @@ public class BookController {
         bookInfo.setIntroduce(introduce);
         bookInfo.setNumber(number);
         bookInfo.setBookType(bookType);
+        if(!bookImg.isEmpty()){
+            String imgName = bookImg.getOriginalFilename();
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+            imgName = df.format(LocalDateTime.now())+imgName;
+            try {
+                FileUtil.uploadFile(bookImg.getBytes(),filePath,imgName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseUtil.error("上传图书封面失败");
+            }
+            bookInfo.setBookImg(imgName);
+        }
         bookInfoService.saveAndFlush(bookInfo);
         return ResponseUtil.success();
     }
